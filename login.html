@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login Admin</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    width:320px;
+    box-shadow:0 2px 12px rgba(0,0,0,.1);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Login Admin</h2>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Email">
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Password">
+
+    <button onclick="login()">
+        Login
+    </button>
+</div>
+
+<script type="module">
+
+import { createClient }
+from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+    'https://lleabupwwoacnhkgqrby.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZWFidXB3d29hY25oa2dxcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODcxMTMsImV4cCI6MjA5NTY2MzExM30.lROS6ezfc-SCo3tm0T_H3GU0rF-MCuiq1Fg5DuTZzl4'
+)
+
+window.login = async () => {
+
+    const email =
+    document.getElementById('email').value
+
+    const password =
+    document.getElementById('password').value
+
+    const { error } =
+    await supabase.auth.signInWithPassword({
+        email,
+        password
+    })
+
+    if(error){
+        alert(error.message)
+        return
+    }
+
+    location.href = 'admin.html'
+}
+
+</script>
+
+</body>
+</html>
