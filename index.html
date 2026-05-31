@@ -6,76 +6,161 @@
 
 <title>Pendaftaran Peserta Didik</title>
 
-<style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
 
 *{
     box-sizing:border-box;
-    font-family:Arial,sans-serif;
+    margin:0;
+    padding:0;
 }
 
 body{
-    background:#f5f5f5;
-    margin:0;
+
+    font-family:'Inter',sans-serif;
+
+    background:#f5f7fb;
+
     padding:20px;
+
+    color:#1f2937;
 }
 
 .container{
-    max-width:1000px;
+
+    max-width:900px;
+
     margin:auto;
-    background:#fff;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
-h1{
-    text-align:center;
+.card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+    0 10px 25px rgba(
+        0,0,0,0.06
+    );
 }
 
-.section{
-    margin-top:25px;
-    padding:20px;
-    border:1px solid #ddd;
-    border-radius:8px;
-}
+.card h2{
 
-.section h2{
-    margin-top:0;
-}
+    margin-bottom:15px;
 
-label{
-    display:block;
-    margin-top:10px;
-    font-weight:bold;
+    color:#2563eb;
+
+    font-size:20px;
 }
 
 input,
 select,
 textarea{
+
     width:100%;
-    padding:10px;
-    margin-top:5px;
+
+    padding:14px;
+
+    border:1px solid #dbe3ef;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    margin-top:6px;
+
+    margin-bottom:14px;
 }
 
-textarea{
-    min-height:120px;
+input:focus,
+select:focus,
+textarea:focus{
+
+    outline:none;
+
+    border-color:#2563eb;
+
+    box-shadow:
+    0 0 0 4px rgba(
+        37,99,235,0.1
+    );
 }
 
-.info{
-    font-size:13px;
-    color:#666;
-    margin-top:5px;
-}
+label{
 
-.button-area{
-    margin-top:30px;
-    text-align:center;
+    font-weight:600;
+
+    font-size:14px;
 }
 
 button{
-    padding:12px 25px;
-    margin:5px;
+
+    width:100%;
+
+    border:none;
+
+    background:#2563eb;
+
+    color:white;
+
+    height:56px;
+
+    border-radius:16px;
+
+    font-size:16px;
+
+    font-weight:600;
+
     cursor:pointer;
+}
+
+button:hover{
+
+    opacity:0.95;
+}
+
+.header{
+
+    text-align:center;
+
+    margin-bottom:25px;
+}
+
+.header h1{
+
+    font-size:28px;
+
+    color:#2563eb;
+}
+
+.header p{
+
+    color:#6b7280;
+}
+
+.note{
+
+    background:#eff6ff;
+
+    border-left:4px solid #2563eb;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-top:10px;
+
+    font-size:14px;
 }
 
 </style>
