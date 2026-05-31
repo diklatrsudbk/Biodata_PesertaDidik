@@ -294,12 +294,8 @@ pada tahap berikutnya.
 
 <div class="button-area">
 
-<button onclick="simpan()">
+<button id="btnSimpan" onclick="simpan()">
 SIMPAN
-</button>
-
-<button onclick="resetForm()">
-RESET
 </button>
 
 </div>
@@ -786,6 +782,50 @@ function hitungPeriode(){
 
     }
 }
+
+   function setFormDisabled(status){
+
+    const elements =
+    document.querySelectorAll(
+        'input, select, textarea, button'
+    )
+
+    elements.forEach(el => {
+
+        el.disabled = status
+
+    })
+
+}
+
+   function clearForm(){
+
+    document
+    .querySelectorAll(
+        'input, textarea'
+    )
+    .forEach(el => {
+
+        if(
+            el.type !== 'button' &&
+            el.type !== 'submit'
+        ){
+            el.value = ''
+        }
+
+    })
+
+    document
+    .querySelectorAll(
+        'select'
+    )
+    .forEach(el => {
+
+        el.selectedIndex = 0
+
+    })
+
+} 
   
 </script>
 
