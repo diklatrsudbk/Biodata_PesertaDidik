@@ -277,14 +277,11 @@ Administrasi, IT, Keuangan, dll.
 
 <div class="section">
 
-<h2>Upload Dokumen</h2>
+<label>Pas Foto (JPG max 200KB)</label>
+<input type="file" id="pasfoto" accept="image/jpeg,image/jpg">
 
-<p>
-Versi 1.0:
-Upload belum aktif.
-Cloudflare R2 akan ditambahkan
-pada tahap berikutnya.
-</p>
+<label>Dokumen (PDF max 2MB)</label>
+<input type="file" id="dokumen" accept="application/pdf">
 
 </div>
 
@@ -634,6 +631,56 @@ function hitungPeriode(){
     )
 
 }
+
+    async function uploadPasFoto(file, nim){
+
+    const fileName =
+    `${nim}-foto-${Date.now()}.jpg`
+
+    const { data, error } =
+    await supabase
+    .storage
+    .from('pasfoto')
+    .upload(fileName, file)
+
+    if(error){
+        throw error
+    }
+
+    const { data: urlData } =
+    supabase
+    .storage
+    .from('pasfoto')
+    .getPublicUrl(fileName)
+
+    return urlData.publicUrl
+}
+
+    async function uploadDokumen(file, nim){
+
+    const fileName =
+    `${nim}-dokumen-${Date.now()}.pdf`
+
+    const { data, error } =
+    await supabase
+    .storage
+    .from('dokumen')
+    .upload(fileName, file)
+
+    if(error){
+        throw error
+    }
+
+    const { data: urlData } =
+    supabase
+    .storage
+    .from('dokumen')
+    .getPublicUrl(fileName)
+
+    return urlData.publicUrl
+}
+
+    
   
 
   window.simpan = async () => {
