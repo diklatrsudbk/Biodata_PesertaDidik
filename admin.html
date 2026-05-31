@@ -101,6 +101,10 @@ img{
 
 <div class="topbar">
 
+    <button onclick="logout()">
+Logout
+</button>
+
 <input id="search" placeholder="Cari NIM / Nama">
 
 <select id="filterJurusan">
@@ -143,14 +147,22 @@ Total: <span id="totalPeserta">0</span>
 </table>
 
 <script type="module">
+    
 
 import { createClient }
 from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 const supabase = createClient(
 'https://lleabupwwoacnhkgqrby.supabase.co',
-'YOUR_ANON_KEY'
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZWFidXB3d29hY25oa2dxcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODcxMTMsImV4cCI6MjA5NTY2MzExM30.lROS6ezfc-SCo3tm0T_H3GU0rF-MCuiq1Fg5DuTZzl4'
 )
+
+    const { data } =
+await supabase.auth.getSession()
+
+if(!data.session){
+    location.href = 'login.html'
+}
 
 let allData = []
 
@@ -272,6 +284,13 @@ alert("Data terhapus")
 // refresh local data
 init()
 
+}
+
+    window.logout = async () => {
+
+    await supabase.auth.signOut()
+
+    location.href = 'login.html'
 }
 
 // =========================
