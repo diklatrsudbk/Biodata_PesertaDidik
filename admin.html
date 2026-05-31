@@ -266,33 +266,113 @@ Hapus
 // =========================
 window.hapus = async (nim) => {
 
-if(!confirm("Hapus NIM " + nim + " ?")) return
+    if(!confirm("Hapus data NIM " + nim + " ?")){
+        return
+    }
 
-const { error } =
-await supabase
-.from('pesertadidik')
-.delete()
-.eq('nim', nim)
+    try{
 
-if(error){
-alert(error.message)
-return
+        // Ambil data peserta dulu
+        const { data: peserta, error: errorCari } =
+        await supabase
+        .from('pesertadidik')
+        .select('pasfoto_url,dokumen_url')
+        .eq('nim', nim)
+        .single()
+
+        if(errorCari){
+            alert("Gagal membaca data peserta")
+            console.error(errorCari)
+            return
+        }
+
+        // =====================
+        // HAPUS FOTO
+        // =====================
+
+        if(peserta.pasfoto_url){
+
+            const namaFoto =
+            peserta.pasfoto_url
+            .split('/pasfoto/')[1]
+
+            if(namaFoto){
+
+                const { error } =
+                await supabase
+                .storage
+                .from('pasfoto')
+                .remove([namaFoto])
+
+                if(error){
+                    console.error(
+                        "Gagal hapus foto",
+                        error
+                    )
+                }
+            }
+        }
+
+        // =====================
+        // HAPUS DOKUMEN
+        // =====================
+
+        if(peserta.dokumen_url){
+
+            const namaDokumen =
+            peserta.dokumen_url
+            .split('/dokumen/')[1]
+
+            if(namaDokumen){
+
+                const { error } =
+                await supabase
+                .storage
+                .from('dokumen')
+                .remove([namaDokumen])
+
+                if(error){
+                    console.error(
+                        "Gagal hapus dokumen",
+                        error
+                    )
+                }
+            }
+        }
+
+        // =====================
+        // HAPUS DATABASE
+        // =====================
+
+        const { error: errorDelete } =
+        await supabase
+        .from('pesertadidik')
+        .delete()
+        .eq('nim', nim)
+
+        if(errorDelete){
+            alert(
+                "Gagal hapus data: " +
+                errorDelete.message
+            )
+            return
+        }
+
+        alert("Data berhasil dihapus")
+
+        init()
+
+    }
+    catch(err){
+
+        console.error(err)
+
+        alert(
+            "Terjadi kesalahan saat menghapus"
+        )
+    }
+
 }
-
-alert("Data terhapus")
-
-// refresh local data
-init()
-
-}
-
-    window.logout = async () => {
-
-    await supabase.auth.signOut()
-
-    location.href = 'login.html'
-}
-
 // =========================
 // FILL DROPDOWN
 // =========================
