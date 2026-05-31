@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pendaftaran Peserta Didik</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    background:#fff;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+h1{
+    text-align:center;
+}
+
+.section{
+    margin-top:25px;
+    padding:20px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.section h2{
+    margin-top:0;
+}
+
+label{
+    display:block;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+}
+
+textarea{
+    min-height:120px;
+}
+
+.info{
+    font-size:13px;
+    color:#666;
+    margin-top:5px;
+}
+
+.button-area{
+    margin-top:30px;
+    text-align:center;
+}
+
+button{
+    padding:12px 25px;
+    margin:5px;
+    cursor:pointer;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>PENDAFTARAN PESERTA DIDIK</h1>
+
+<p>
+Silakan lengkapi seluruh data dengan benar.
+</p>
+
+<!-- ========================= -->
+<!-- DATA PRAKTIK -->
+<!-- ========================= -->
+
+<div class="section">
+
+<h2>Data Praktik</h2>
+
+<label>Bagian</label>
+
+<select id="bagian">
+
+<option value="">
+--Pilih Bagian--
+</option>
+
+<option value="Pelayanan Medik">
+Pelayanan Medik
+</option>
+
+<option value="Penunjang Medik">
+Penunjang Medik
+</option>
+
+<option value="Umum">
+Umum
+</option>
+
+</select>
+
+<div class="info">
+
+Panduan Memilih Bagian:
+
+<br>• Pelayanan Medik:
+Kedokteran, Kebidanan, Keperawatan.
+
+<br>• Penunjang Medik:
+Farmasi, Gizi, Radiologi, dll.
+
+<br>• Umum:
+Administrasi, IT, Keuangan, dll.
+
+</div>
+
+<label>Jenis Praktik</label>
+
+<select id="jenis">
+
+<option value="">
+--Pilih Jenis--
+</option>
+
+<option>PKL</option>
+<option>PBL</option>
+<option>Pembelajaran Luar Kelas</option>
+<option>Magang</option>
+<option>Resident</option>
+<option>Hospital Visit</option>
+<option>LIC</option>
+
+</select>
+
+<label>Tanggal Mulai</label>
+<input type="date" id="tanggal_mulai">
+
+<label>Tanggal Selesai</label>
+<input type="date" id="tanggal_selesai">
+
+<label>Periode</label>
+<input type="text" id="set_periode" readonly>
+
+</div>
+
+<!-- ========================= -->
+<!-- DATA INSTITUSI -->
+<!-- ========================= -->
+
+<div class="section">
+
+<h2>Data Institusi</h2>
+
+<label>Nama Institusi</label>
+<input list="institusiList" id="namasekolah">
+
+<label>Jurusan</label>
+<input list="jurusanList" id="jurusan">
+
+<label>Kota Institusi</label>
+<input list="kotaList" id="alamatsekolah">
+
+<label>Jenjang Pendidikan</label>
+
+<select id="jenjangpend">
+
+<option value="">
+--Pilih Jenjang--
+</option>
+
+<option>SMK/SMA</option>
+<option>D3</option>
+<option>D4</option>
+<option>S1</option>
+<option>S2</option>
+<option>Profesi</option>
+<option>Specialist 1</option>
+<option>Specialist 2</option>
+<option>Fellowship</option>
+
+</select>
+
+</div>
+
+<!-- ========================= -->
+<!-- DATA PRIBADI -->
+<!-- ========================= -->
+
+<div class="section">
+
+<h2>Data Pribadi</h2>
+
+<label>Nama Lengkap</label>
+<input type="text" id="nama">
+
+<label>NIM / NISN</label>
+<input type="text" id="nim">
+
+<label>No KTP</label>
+<input type="text" id="ktp">
+
+<label>Agama</label>
+
+<select id="agama">
+
+<option value="">
+--Pilih Agama--
+</option>
+
+<option>Islam</option>
+<option>Kristen</option>
+<option>Katolik</option>
+<option>Protestan</option>
+<option>Budha</option>
+<option>Hindu</option>
+<option>Konghucu</option>
+
+</select>
+
+<label>Jenis Kelamin</label>
+
+<select id="kelamin">
+
+<option value="">
+--Pilih Jenis Kelamin--
+</option>
+
+<option>Laki-Laki</option>
+<option>Perempuan</option>
+
+</select>
+
+<label>No WhatsApp</label>
+<input type="text" id="hp">
+
+<label>Tempat Lahir</label>
+<input list="kotaList" id="tempatlahir">
+
+<label>Tanggal Lahir</label>
+<input type="date" id="tanggallahir">
+
+<label>Umur</label>
+<input type="number" id="umur" readonly>
+
+<label>Alamat Lengkap</label>
+<textarea id="alamat"></textarea>
+
+<label>Kelurahan - Kecamatan</label>
+<input type="text" id="kelurahan">
+
+</div>
+
+<!-- ========================= -->
+<!-- UPLOAD -->
+<!-- ========================= -->
+
+<div class="section">
+
+<h2>Upload Dokumen</h2>
+
+<p>
+Versi 1.0:
+Upload belum aktif.
+Cloudflare R2 akan ditambahkan
+pada tahap berikutnya.
+</p>
+
+</div>
+
+<!-- ========================= -->
+<!-- BUTTON -->
+<!-- ========================= -->
+
+<div class="button-area">
+
+<button onclick="simpan()">
+SIMPAN
+</button>
+
+<button onclick="resetForm()">
+RESET
+</button>
+
+</div>
+
+</div>
+
+<!-- datalist akan diisi pada Bagian 2 -->
+
+<datalist id="kotaList"></datalist>
+<datalist id="institusiList"></datalist>
+<datalist id="jurusanList"></datalist>
+
+<script type="module">
+
+import { createClient }
+from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+    'https://lleabupwwoacnhkgqrby.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZWFidXB3d29hY25oa2dxcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODcxMTMsImV4cCI6MjA5NTY2MzExM30.lROS6ezfc-SCo3tm0T_H3GU0rF-MCuiq1Fg5DuTZzl4'
+)
+
+window.supabase = supabase
+
+  const daftarKota = [
+
+"Aceh Barat",
+"Ambon",
+"Badung",
+"Balikpapan",
+"Banda Aceh",
+"Bandar Lampung",
+"Bandung",
+"Kab. Bandung",
+"Kab. Bandung Barat",
+"Banjar",
+"Banjarbaru",
+"Banjarmasin",
+"Bantul",
+"Banyuwangi",
+"Batam",
+"Bekasi",
+"Bengkulu",
+"Binjai",
+"Blitar",
+"Bogor",
+"Bojonegoro",
+"Boyolali",
+"Brebes",
+"Ciamis",
+"Cianjur",
+"Cilacap",
+"Cilegon",
+"Cimahi",
+"Cirebon",
+"Denpasar",
+"Depok",
+"Dumai",
+"Garut",
+"Gresik",
+"Jakarta Barat",
+"Jakarta Pusat",
+"Jakarta Selatan",
+"Jakarta Timur",
+"Jakarta Utara",
+"Jambi",
+"Jayapura",
+"Jember",
+"Jombang",
+"Karawang",
+"Kediri",
+"Kendari",
+"Klaten",
+"Kudus",
+"Kupang",
+"Lamongan",
+"Madiun",
+"Magelang",
+"Makassar",
+"Malang",
+"Manado",
+"Mataram",
+"Medan",
+"Metro",
+"Mojokerto",
+"Padang",
+"Palangka Raya",
+"Palembang",
+"Palu",
+"Pasuruan",
+"Pekalongan",
+"Pekanbaru",
+"Pontianak",
+"Probolinggo",
+"Purwakarta",
+"Samarinda",
+"Semarang",
+"Serang",
+"Sidoarjo",
+"Solo (Surakarta)",
+"Subang",
+"Sukabumi",
+"Sumedang",
+"Surabaya",
+"Tangerang",
+"Tangerang Selatan",
+"Tasikmalaya",
+"Tegal",
+"Yogyakarta"
+]
+const daftarInstitusi = [
+
+"ATRO Persada Nusantara Bekasi",
+"Binus University Bandung",
+"Institut Teknologi Bandung (ITB)",
+"Politeknik PIKSI Ganesha",
+"Politkenik Al Islam Bandung",
+"Universitas Indonesia (UI)",
+"Sekolah Tinggi Farmasi Indonesia (STFI)",
+"Universitas Muhammadiyah Bandung (UMB)",
+"Universitas Wahid Hasyim Semarang (UNWAHAS)",
+"UIN Sunan Gunung Djati Bandung",
+"Poltekkes Semarang",
+"Poltekkes Tasikmalaya",
+"SMKN 7 Bandung",
+"SMK Nusa Bhakti Bandung",
+"Universitas Diponegoro (UNDIP)",
+"Universitas Islam Bandung (UNISBA)",
+"Universitas Maranatha",
+"Universitas Sriwijaya",
+"Universitas Siliwangi Tasikmalaya",
+"Universitas Telkom",
+"Stikes Karsa Husada Garut",
+"Universitas Logistik dan Bisnis Internasional (ULBI)",
+"Universitas Bandung",
+"Stikep PPNI Jabar",
+"Stikes Budi Luhur",
+"Stikes RS Dustira",
+"Stikes Dharma Husada Bandung (DHB)",
+"Inkes Rajawali",
+"Inkes Immanuel",
+"Inkes Pelamonia Makasar",
+"Poltekkes Palu",
+"Poltekkes Bandung",
+"Politeknik Cendrawasih Palu",
+"Universitas Padjajaran (UNPAD)",
+"Universitas Pasundan (UNPAS)",
+"Universitas Sali Al-Aitam",
+"UNISA Bandung",
+"Universitas Bhakti Kencana (UBK)",
+"Universitas Pendidikan Indonesia (UPI)",
+"Universitas Jenderal Achmad Yani (UNJANI)",
+"Universitas Borromeus",
+"Universitas Muhammadiyah Ahmad Dahlan (UM-AD) Palembang",
+"Universitas Dehasen (UNIVED) Bengkulu",
+"Stikes Marendeng Majene"
+]
+  const daftarJurusan = [
+
+"Keperawatan Regular",
+"Keperawatan Non-Regular",
+"Keperawatan RPL",
+"Profesi Ners",
+"Profesi Ners Non-Regular",
+"Kebidanan Regular",
+"Kebidanan Non-regular",
+"Kebidanan RPL",
+"Profesi Bidan Regular",
+"Profesi Bidan Non-Regular",
+"Kedokteran",
+"Kedokteran / PSPD",
+"PPDS Anak",
+"PPDS Anaestesi",
+"PPDS Bedah",
+"PPDS Obgyn",
+"PPDS KFR",
+"PPDS THT-KL",
+"PPDS Neurologi",
+"PPDS IPD",
+"Kedokteran Gigi",
+"Anestesi Regular",
+"Anestesi RPL",
+"Laboratorium Medis",
+"Gizi",
+"Psikologi",
+"Fisioterapi",
+"Analis Kesehatan",
+"Rekam Medik",
+"Terapi Wicara",
+"Terapi Okupasi",
+"Fisika",
+"Biologi",
+"Radiologi",
+"Farmasi",
+"Computer Science",
+"Apoteker",
+"Kesehatan Lingkungan (KESLING)",
+"Kesehatan Masyarakat"
+]
+
+ function isiDatalist(id, data){
+
+    const list =
+    document.getElementById(id)
+
+    list.innerHTML = data
+        .map(item =>
+            `<option value="${item}">`
+        )
+        .join('')
+}
+
+isiDatalist(
+    'kotaList',
+    daftarKota
+)
+
+isiDatalist(
+    'institusiList',
+    daftarInstitusi
+)
+
+isiDatalist(
+    'jurusanList',
+    daftarJurusan
+) 
+
+ document.getElementById('ktp')
+.addEventListener('input', function(){
+
+    this.value =
+    this.value.replace(/\D/g,'')
+
+})
+
+document.getElementById('hp')
+.addEventListener('input', function(){
+
+    this.value =
+    this.value.replace(/\D/g,'')
+
+})
+
+ document
+.getElementById('tanggallahir')
+.addEventListener('change', hitungUmur)
+
+function hitungUmur(){
+
+    const tgl =
+    document.getElementById(
+        'tanggallahir'
+    ).value
+
+    if(!tgl) return
+
+    const lahir =
+    new Date(tgl)
+
+    const sekarang =
+    new Date()
+
+    let umur =
+    sekarang.getFullYear()
+    -
+    lahir.getFullYear()
+
+    const bulan =
+    sekarang.getMonth()
+    -
+    lahir.getMonth()
+
+    if(
+        bulan < 0 ||
+        (
+            bulan === 0 &&
+            sekarang.getDate()
+            <
+            lahir.getDate()
+        )
+    ){
+        umur--
+    }
+
+    document
+    .getElementById('umur')
+    .value = umur
+} 
+
+  document
+.getElementById('tanggal_mulai')
+.addEventListener(
+    'change',
+    hitungPeriode
+)
+
+document
+.getElementById('tanggal_selesai')
+.addEventListener(
+    'change',
+    hitungPeriode
+)
+
+function hitungPeriode(){
+
+    const mulai =
+    document.getElementById(
+        'tanggal_mulai'
+    ).value
+
+    const selesai =
+    document.getElementById(
+        'tanggal_selesai'
+    ).value
+
+    if(
+        !mulai ||
+        !selesai
+    ) return
+
+    document
+    .getElementById('set_periode')
+    .value =
+    mulai +
+    ' - ' +
+    selesai
+}
+
+ function validasiDaftar(
+    value,
+    daftar
+){
+
+    return daftar.includes(
+        value
+    )
+
+}
+  
+
+  window.simpan = async () => {
+
+    const tombol =
+    document.getElementById('btnSimpan')
+
+    try {
+
+        tombol.innerText = 'Menyimpan...'
+        setFormDisabled(true)
+
+        // =========================
+        // AMBIL DATA INPUT
+        // =========================
+        const bagian = document.getElementById('bagian').value
+        const jenis = document.getElementById('jenis').value
+        const tanggal_mulai = document.getElementById('tanggal_mulai').value
+        const tanggal_selesai = document.getElementById('tanggal_selesai').value
+        const set_periode = document.getElementById('set_periode').value
+        const namasekolah = document.getElementById('namasekolah').value
+        const jurusan = document.getElementById('jurusan').value
+        const alamatsekolah = document.getElementById('alamatsekolah').value
+        const jenjangpend = document.getElementById('jenjangpend').value
+        const nama = document.getElementById('nama').value
+        const nim = document.getElementById('nim').value
+        const ktp = document.getElementById('ktp').value
+        const agama = document.getElementById('agama').value
+        const kelamin = document.getElementById('kelamin').value
+        const hp = document.getElementById('hp').value
+        const tempatlahir = document.getElementById('tempatlahir').value
+        const tanggallahir = document.getElementById('tanggallahir').value
+        const umur = Number(document.getElementById('umur').value)
+        const alamat = document.getElementById('alamat').value
+        const kelurahan = document.getElementById('kelurahan').value
+
+        // =========================
+        // VALIDASI DATA TEKS
+        // =========================
+        if(!validasiDaftar(tempatlahir, daftarKota)){
+            throw new Error('Tempat lahir harus dipilih dari daftar kota')
+        }
+
+        if(!validasiDaftar(alamatsekolah, daftarKota)){
+            throw new Error('Kota institusi harus dipilih dari daftar')
+        }
+
+        if(!validasiDaftar(namasekolah, daftarInstitusi)){
+            throw new Error('Institusi harus dipilih dari daftar')
+        }
+
+        if(!validasiDaftar(jurusan, daftarJurusan)){
+            throw new Error('Jurusan harus dipilih dari daftar')
+        }
+
+        if(umur < 14){
+            throw new Error('Usia minimal 14 tahun')
+        }
+
+        // =========================
+        // AMBIL FILE (HARUS DI SINI!)
+        // =========================
+        const fileFoto =
+        document.getElementById('pasfoto').files[0]
+
+        const fileDokumen =
+        document.getElementById('dokumen').files[0]
+
+        if(!fileFoto){
+            throw new Error("Pas foto wajib diupload")
+        }
+
+        if(!fileDokumen){
+            throw new Error("Dokumen wajib diupload")
+        }
+
+        // =========================
+        // UPLOAD FILE
+        // =========================
+        const pasfoto_url =
+        await uploadPasFoto(fileFoto, nim)
+
+        const dokumen_url =
+        await uploadDokumen(fileDokumen, nim)
+
+        // =========================
+        // INSERT DATABASE
+        // =========================
+        const { error } =
+        await supabase
+        .from('pesertadidik')
+        .insert([{
+
+            bagian,
+            jenis,
+            tanggal_mulai,
+            tanggal_selesai,
+            set_periode,
+
+            namasekolah,
+            jurusan,
+            alamatsekolah,
+            jenjangpend,
+
+            nama,
+            nim,
+            ktp,
+
+            agama,
+            kelamin,
+            hp,
+
+            tempatlahir,
+            tanggallahir,
+            umur,
+
+            alamat,
+            kelurahan,
+
+            pasfoto_url,
+            dokumen_url
+
+        }])
+
+        if(error){
+            throw error
+        }
+
+        // =========================
+        // SUCCESS
+        // =========================
+        alert('Data berhasil disimpan')
+
+        clearForm()
+
+    } catch(err){
+
+        console.error(err)
+
+        alert(err.message || 'Terjadi kesalahan')
+
+    } finally {
+
+        setFormDisabled(false)
+        tombol.innerText = 'SIMPAN'
+
+    }
+}
+  
+</script>
+
+</body>
+</html>
