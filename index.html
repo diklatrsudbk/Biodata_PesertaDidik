@@ -1,1046 +1,614 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Pendaftaran Peserta Didik</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Peserta Didik</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-
-    font-family:'Inter',sans-serif;
-
-    background:
-    linear-gradient(
-        135deg,
-        #e8f0ff 0%,
-        #f7f9fc 100%
-    );
-
-    min-height:100vh;
-
-    padding:20px;
-}
-
-.container{
-
-    max-width:900px;
-
-    margin:auto;
-}
-
-h1{
-
-    text-align:center;
-
-    color:#2563eb;
-
-    font-size:32px;
-
-    font-weight:700;
-
-    margin-bottom:10px;
-}
-
-p{
-
-    text-align:center;
-
-    color:#6b7280;
-
-    margin-bottom:30px;
-}
-
-.section{
-
-    background:#ffffff;
-
-    border-radius:24px;
-
-    padding:24px;
-
-    margin-bottom:20px;
-
-    box-shadow:
-    0 10px 30px
-    rgba(0,0,0,0.08);
-}
-
-.section h2{
-
-    color:#2563eb;
-
-    margin-bottom:20px;
-
-    font-size:20px;
-}
-
-label{
-
-    display:block;
-
-    margin-bottom:6px;
-
-    font-weight:600;
-
-    color:#374151;
-}
-
-input,
-select,
-textarea{
-
-    width:100%;
-
-    border:1px solid #dbe3ef;
-
-    border-radius:14px;
-
-    padding:14px;
-
-    font-size:15px;
-
-    margin-bottom:15px;
-
-    transition:0.2s;
-}
-
-textarea{
-
-    min-height:120px;
-
-    resize:vertical;
-}
-
-input:focus,
-select:focus,
-textarea:focus{
-
-    outline:none;
-
-    border-color:#2563eb;
-
-    box-shadow:
-    0 0 0 4px
-    rgba(
-        37,
-        99,
-        235,
-        0.10
-    );
-}
-
-.info{
-
-    background:#eff6ff;
-
-    border-left:4px solid #2563eb;
-
-    padding:12px;
-
-    border-radius:12px;
-
-    margin-bottom:15px;
-
-    color:#374151;
-
-    font-size:14px;
-
-    line-height:1.6;
-}
-
-.button-area{
-
-    margin-top:30px;
-}
-
-#btnSimpan{
-
-    width:100%;
-
-    height:58px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #3b82f6
-    );
-
-    color:white;
-
-    font-size:17px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    box-shadow:
-    0 10px 20px
-    rgba(
-        37,
-        99,
-        235,
-        0.25
-    );
-}
-
-#btnSimpan:hover{
-
-    transform:
-    translateY(-1px);
-}
-
-#btnSimpan:disabled{
-
-    opacity:0.6;
-
-    cursor:not-allowed;
-}
-
-a{
-
-    text-decoration:none;
-
-    color:#2563eb;
-
-    font-weight:600;
-}
-
-@media(max-width:768px){
-
-    body{
-        padding:12px;
-    }
-
-    .section{
-        padding:18px;
-    }
-
-    h1{
-        font-size:24px;
-    }
-}
-
-
-</style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background:#f7f8fb;
+            color:#2d3748;
+            padding: 15px; /* Tambah padding agar tidak mepet layar HP */
+        }
+
+        .container{
+            max-width:900px;
+            margin:20px auto;
+            padding-bottom:40px;
+        }
+
+        h1{
+            text-align:center;
+            color:#1f2937;
+            font-size:24px; /* Dikecilkan sedikit agar muat satu baris di HP */
+            font-weight:700;
+            margin-bottom:10px;
+        }
+
+        p{
+            text-align:center;
+            color:#6b7280;
+            margin-bottom:25px;
+            font-size: 14px;
+        }
+
+        .section{
+            background:#ffffff;
+            border-radius:20px; /* Sedikit lebih fleksibel di HP */
+            padding:20px;
+            margin-bottom:20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .section h2{
+            color:#1f2937;
+            font-size:18px;
+            font-weight:600;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f3f4f6;
+            padding-bottom: 8px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:6px;
+            font-weight:600;
+            color:#374151;
+            font-size: 14px;
+        }
+
+        input, select, textarea{
+            width:100%;
+            border:1px solid #edf1f7;
+            border-radius:12px;
+            padding:12px 14px;
+            font-size:14px; /* Standar kenyamanan input mobile */
+            margin-bottom:15px;
+            transition:0.2s;
+            color:#DCDCDC;
+            background-color: #fafbfd;
+            -webkit-appearance: none; /* Hilangkan style bawaan iOS */
+        }
+
+        textarea{
+            min-height:100px;
+            resize:vertical;
+        }
+
+        input:focus, select:focus, textarea:focus{
+            border-color:#3b82f6;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            outline:none;
+        }
+
+        .info{
+            background:#eff6ff;
+            border-left:4px solid #2563eb;
+            padding:12px;
+            border-radius:1px;
+            margin-bottom:15px;
+            color:#1e40af;
+            font-size:11px;
+            line-height:1.5;
+        }
+
+        .button-area{
+            margin-top:25px;
+        }
+
+        #btnSimpan{
+            width:100%;
+            height:52px; /* Disesuaikan agar pas dengan genggaman jempol */
+            border:none;
+            border-radius:14px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color:white;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        #btnSimpan:active {
+            transform: scale(0.98); /* Efek membal saat ditekan di HP */
+        }
+
+        #btnSimpan:disabled{
+            opacity:0.5;
+            cursor:not-allowed;
+        }
+
+        a{
+            text-decoration:none;
+            color:#2563eb;
+            font-weight:600;
+        }
+
+        .foto-area{
+            margin-bottom:20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .foto-box{
+            width:130px;
+            height:195px; /* Rasio pas foto 2x3 yang pas */
+            border:2px dashed #cbd5e1;
+            border-radius:14px;
+            background:#fafbfd;
+            cursor:pointer;
+            overflow:hidden;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            transition:0.2s;
+        }
+
+        .foto-box:hover{
+            border-color:#3b82f6;
+            background:#f1f5f9;
+        }
+
+        .foto-placeholder{
+            text-align:center;
+            color:#64748b;
+            line-height:1.5;
+            padding:10px;
+            font-size: 12px;
+        }
+
+        .foto-box img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+        }
+
+        .admin-link{
+            position: static; /* Ubah dari fixed agar tidak mengganggu layar HP */
+            text-align: right;
+            margin-bottom: 15px;
+        }
+        
+        .admin-link a {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+            border: 1px solid #edf1f7;
+        }
+
+        .profil-layout{
+            display:flex;
+            flex-direction: column; /* Default mobile-first */
+            gap:15px;
+        }
+
+        .profil-form{
+            width: 100%;
+        }
+
+        .dokumen-box{
+            border:2px dashed #cbd5e1;
+            border-radius:14px;
+            background:#fafbfd;
+            min-height:90px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            cursor:pointer;
+            text-align:center;
+            padding:15px;
+            margin-bottom: 15px;
+            transition: 0.2s;
+        }
+
+        .dokumen-box:hover{
+            border-color: #3b82f6;
+            background:#f3f6fb;
+        }
+        
+        #namaDokumen {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        /* Responsive Breakpoints untuk Layar PC / Tablet */
+        @media(min-width:768px){
+            body { padding: 40px 20px; }
+            h1 { font-size: 28px; }
+            p { font-size: 16px; }
+            .section { padding: 24px; }
+            .section h2 { font-size: 20px; }
+            .profil-layout{ flex-direction: row; gap: 24px; align-items: flex-start; }
+            .foto-area { width: auto; justify-content: left; }
+            .admin-link{ position: fixed; top: 15px; right: 15px; margin-bottom: 0; }
+            .admin-link a { font-size: 14px; padding: 10px 14px; }
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
 
-<h1>PENDAFTARAN PESERTA DIDIK</h1>
+    <div class="admin-link">
+        <a href="login.html">🔒 Admin</a>
+    </div>   
 
-<p>
-Silakan lengkapi seluruh data dengan benar.
-</p>
+    <h1>PENDAFTARAN PESERTA DIDIK</h1>
+    <p>Silakan lengkapi seluruh data dengan benar.</p>
 
-    <div style="position:fixed;top:10px;right:10px">
-    <a href="login.html">🔒 Admin</a>
-</div>
+    <div class="section">
+        <h2>Data Praktik</h2>
+        
+        <label for="bagian">Bagian</label>
+        <select id="bagian">
+            <option value="">--Pilih Bagian--</option>
+            <option value="Pelayanan Medik">Pelayanan Medik</option>
+            <option value="Penunjang Medik">Penunjang Medik</option>
+            <option value="Umum">Umum</option>
+        </select>
 
-<!-- ========================= -->
-<!-- DATA PRAKTIK -->
-<!-- ========================= -->
+        <div class="info">
+            <strong>Panduan Memilih Bagian:</strong><br>
+            • Pelayanan Medik: Kedokteran, Kebidanan, Keperawatan.<br>
+            • Penunjang Medik: Farmasi, Gizi, Radiologi, dll.<br>
+            • Umum: Administrasi, IT, Keuangan, dll.
+        </div>
 
-<div class="section">
+        <label for="jenis">Jenis Praktik</label>
+        <select id="jenis">
+            <option value="">--Pilih Jenis--</option>
+            <option>PKL</option>
+            <option>PBL</option>
+            <option>Pembelajaran Luar Kelas</option>
+            <option>Magang</option>
+            <option>Resident</option>
+            <option>Hospital Visit</option>
+            <option>LIC</option>
+        </select>
 
-<h2>Data Praktik</h2>
+        <label for="tanggal_mulai">Tanggal Mulai</label>
+        <input type="date" id="tanggal_mulai">
 
-<label>Bagian</label>
+        <label for="tanggal_selesai">Tanggal Selesai</label>
+        <input type="date" id="tanggal_selesai">
 
-<select id="bagian">
+        <label for="set_periode">Periode</label>
+        <input type="text" id="set_periode" readonly placeholder="Otomatis terisi...">
+    </div>
 
-<option value="">
---Pilih Bagian--
-</option>
+    <div class="section">
+        <h2>Data Institusi</h2>
 
-<option value="Pelayanan Medik">
-Pelayanan Medik
-</option>
+        <label for="namasekolah">Nama Institusi</label>
+        <input list="institusiList" id="namasekolah" placeholder="Ketik & pilih nama sekolah/kampus">
 
-<option value="Penunjang Medik">
-Penunjang Medik
-</option>
+        <label for="jurusan">Jurusan</label>
+        <input list="jurusanList" id="jurusan" placeholder="Ketik & pilih jurusan">
 
-<option value="Umum">
-Umum
-</option>
+        <label for="alamatsekolah">Kota Institusi</label>
+        <input list="kotaList" id="alamatsekolah" placeholder="Ketik & pilih kota">
 
-</select>
+        <label for="jenjangpend">Jenjang Pendidikan</label>
+        <select id="jenjangpend">
+            <option value="">--Pilih Jenjang--</option>
+            <option>SMK/SMA</option>
+            <option>D3</option>
+            <option>D4</option>
+            <option>S1</option>
+            <option>S2</option>
+            <option>Profesi</option>
+            <option>Specialist 1</option>
+            <option>Specialist 2</option>
+            <option>Fellowship</option>
+        </select>
+    </div>
 
-<div class="info">
+    <div class="section">
+        <h2>Data Pribadi</h2>
 
-Panduan Memilih Bagian:
+        <div class="profil-layout">
+            <div class="foto-area">
+                <label for="pasfoto" class="foto-box" id="fotoPreview">
+                    <div class="foto-placeholder">
+                        <span style="font-size: 24px;">📷</span><br>
+                        <strong>Klik untuk upload foto</strong><br>
+                        <span style="color:#94a3b8; font-size:11px;">Rasio 2x3 (Maks 200 KB)<br>Format JPG/JPEG</span>
+                    </div>
+                </label>
+                <input type="file" id="pasfoto" accept=".jpg,.jpeg,image/jpeg" style="display:none">
+            </div>
+            
+               <div class="info">
+            <strong>Panduan Upload foto:</strong><br>
+            • upload pasfoto ukuran 2x3.<br>
+            • Format Harus jpg/jpeg.<br>
+            • background polos dan berwarna.
+        </div> 
 
-<br>• Pelayanan Medik:
-Kedokteran, Kebidanan, Keperawatan.
+            <div class="profil-form">
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama">
 
-<br>• Penunjang Medik:
-Farmasi, Gizi, Radiologi, dll.
+                <label for="nim">NIM / NISN</label>
+                <input type="text" id="nim">
 
-<br>• Umum:
-Administrasi, IT, Keuangan, dll.
+                <label for="ktp">No. KTP</label>
+                <input type="text" id="ktp" inputmode="numeric">
 
-</div>
+                <label for="agama">Agama</label>
+                <select id="agama">
+                    <option value="">--Pilih Agama--</option>
+                    <option>Islam</option>
+                    <option>Kristen</option>
+                    <option>Katolik</option>
+                    <option>Protestan</option>
+                    <option>Budha</option>
+                    <option>Hindu</option>
+                    <option>Konghucu</option>
+                </select>
 
-<label>Jenis Praktik</label>
+                <label for="kelamin">Jenis Kelamin</label>
+                <select id="kelamin">
+                    <option value="">--Pilih Jenis Kelamin--</option>
+                    <option>Laki-Laki</option>
+                    <option>Perempuan</option>
+                </select>
 
-<select id="jenis">
+                <label for="hp">No. WhatsApp</label>
+                <input type="text" id="hp" inputmode="tel">
 
-<option value="">
---Pilih Jenis--
-</option>
+                <label for="tempatlahir">Tempat Lahir</label>
+                <input list="kotaList" id="tempatlahir" placeholder="Ketik kota lahir">
 
-<option>PKL</option>
-<option>PBL</option>
-<option>Pembelajaran Luar Kelas</option>
-<option>Magang</option>
-<option>Resident</option>
-<option>Hospital Visit</option>
-<option>LIC</option>
+                <label for="tanggallahir">Tanggal Lahir</label>
+                <input type="date" id="tanggallahir">
 
-</select>
+                <label for="umur">Umur</label>
+                <input type="text" id="umur" readonly placeholder="Otomatis hitung...">
 
-<label>Tanggal Mulai</label>
-<input type="date" id="tanggal_mulai">
+                <label for="alamat">Alamat Sesuai KTP</label>
+                <textarea id="alamat" placeholder="Nama Jalan, RT/RW, Kecamatan..."></textarea>
 
-<label>Tanggal Selesai</label>
-<input type="date" id="tanggal_selesai">
+                <label for="kelurahan">Kelurahan</label>
+                <input type="text" id="kelurahan">
+            </div>
+        </div>
+    </div>
 
-<label>Periode</label>
-<input type="text" id="set_periode" readonly>
+    <div class="section">
+        <h2>Dokumen Pendukung</h2>
+        <label for="dokumen" class="dokumen-box">
+            <div id="namaDokumen"><strong>📄 Klik untuk Upload Dokumen</strong><br><span style="color:#94a3b8; font-size:11px;">Format PDF (Maks. 2 MB)</span></div>
+        </label>
+        <input type="file" id="dokumen" accept=".pdf,application/pdf" style="display:none">
+    </div>
 
-</div>
-
-<!-- ========================= -->
-<!-- DATA INSTITUSI -->
-<!-- ========================= -->
-
-<div class="section">
-
-<h2>Data Institusi</h2>
-
-<label>Nama Institusi</label>
-<input list="institusiList" id="namasekolah">
-
-<label>Jurusan</label>
-<input list="jurusanList" id="jurusan">
-
-<label>Kota Institusi</label>
-<input list="kotaList" id="alamatsekolah">
-
-<label>Jenjang Pendidikan</label>
-
-<select id="jenjangpend">
-
-<option value="">
---Pilih Jenjang--
-</option>
-
-<option>SMK/SMA</option>
-<option>D3</option>
-<option>D4</option>
-<option>S1</option>
-<option>S2</option>
-<option>Profesi</option>
-<option>Specialist 1</option>
-<option>Specialist 2</option>
-<option>Fellowship</option>
-
-</select>
-
-</div>
-
-<!-- ========================= -->
-<!-- DATA PRIBADI -->
-<!-- ========================= -->
-
-<div class="section">
-
-<h2>Data Pribadi</h2>
-
-<label>Nama Lengkap</label>
-<input type="text" id="nama">
-
-<label>NIM / NISN</label>
-<input type="text" id="nim">
-
-<label>No KTP</label>
-<input type="text" id="ktp">
-
-<label>Agama</label>
-
-<select id="agama">
-
-<option value="">
---Pilih Agama--
-</option>
-
-<option>Islam</option>
-<option>Kristen</option>
-<option>Katolik</option>
-<option>Protestan</option>
-<option>Budha</option>
-<option>Hindu</option>
-<option>Konghucu</option>
-
-</select>
-
-<label>Jenis Kelamin</label>
-
-<select id="kelamin">
-
-<option value="">
---Pilih Jenis Kelamin--
-</option>
-
-<option>Laki-Laki</option>
-<option>Perempuan</option>
-
-</select>
-
-<label>No WhatsApp</label>
-<input type="text" id="hp">
-
-<label>Tempat Lahir</label>
-<input list="kotaList" id="tempatlahir">
-
-<label>Tanggal Lahir</label>
-<input type="date" id="tanggallahir">
-
-<label>Umur</label>
-<input type="number" id="umur" readonly>
-
-<label>Alamat Lengkap</label>
-<textarea id="alamat"></textarea>
-
-<label>Kelurahan - Kecamatan</label>
-<input type="text" id="kelurahan">
+    <div class="button-area">
+        <button id="btnSimpan">SIMPAN DATA</button>
+    </div>
 
 </div>
-
-<!-- ========================= -->
-<!-- UPLOAD -->
-<!-- ========================= -->
-
-<div class="section">
-
-<label>Pas Foto (JPG max 200KB)</label>
-<input type="file" id="pasfoto" accept="image/jpeg,image/jpg">
-
-<label>Dokumen (PDF max 2MB)</label>
-<input type="file" id="dokumen" accept="application/pdf">
-
-</div>
-
-<!-- ========================= -->
-<!-- BUTTON -->
-<!-- ========================= -->
-
-<div class="button-area">
-
-<button id="btnSimpan" onclick="simpan()">
-SIMPAN
-</button>
-
-</div>
-
-</div>
-
-<!-- datalist akan diisi pada Bagian 2 -->
 
 <datalist id="kotaList"></datalist>
 <datalist id="institusiList"></datalist>
 <datalist id="jurusanList"></datalist>
 
 <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-import { createClient }
-from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    const supabase = createClient(
+        'https://lleabupwwoacnhkgqrby.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZWFidXB3d29hY25oa2dxcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODcxMTMsImV4cCI6MjA5NTY2MzExM30.lROS6ezfc-SCo3tm0T_H3GU0rF-MCuiq1Fg5DuTZzl4'
+    );
+    window.supabase = supabase;
 
-const supabase = createClient(
-    'https://lleabupwwoacnhkgqrby.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZWFidXB3d29hY25oa2dxcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODcxMTMsImV4cCI6MjA5NTY2MzExM30.lROS6ezfc-SCo3tm0T_H3GU0rF-MCuiq1Fg5DuTZzl4'
-)
+    const daftarKota = ["Aceh Barat", "Ambon", "Badung", "Balikpapan", "Banda Aceh", "Bandar Lampung", "Bandung", "Kab. Bandung", "Kab. Bandung Barat", "Banjar", "Banjarbaru", "Banjarmasin", "Bantul", "Banyuwangi", "Batam", "Bekasi", "Bengkulu", "Binjai", "Blitar", "Bogor", "Bojonegoro", "Boyolali", "Brebes", "Ciamis", "Cianjur", "Cilacap", "Cilegon", "Cimahi", "Cirebon", "Denpasar", "Depok", "Dumai", "Garut", "Gresik", "Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Jambi", "Jayapura", "Jember", "Jombang", "Karawang", "Kediri", "Kendari", "Klaten", "Kudus", "Kupang", "Lamongan", "Madiun", "Magelang", "Makassar", "Malang", "Manado", "Mataram", "Medan", "Metro", "Mojokerto", "Padang", "Palangka Raya", "Palembang", "Palu", "Pasuruan", "Pekalongan", "Pekanbaru", "Pontianak", "Probolinggo", "Purwakarta", "Samarinda", "Semarang", "Serang", "Sidoarjo", "Solo (Surakarta)", "Subang", "Sukabumi", "Sumedang", "Surabaya", "Tangerang", "Tangerang Selatan", "Tasikmalaya", "Tegal", "Yogyakarta"];
+    const daftarInstitusi = ["ATRO Persada Nusantara Bekasi", "Binus University Bandung", "Institut Teknologi Bandung (ITB)", "Politeknik PIKSI Ganesha", "Politkenik Al Islam Bandung", "Universitas Indonesia (UI)", "Sekolah Tinggi Farmasi Indonesia (STFI)", "Universitas Muhammadiyah Bandung (UMB)", "Universitas Wahid Hasyim Semarang (UNWAHAS)", "UIN Sunan Gunung Djati Bandung", "Poltekkes Semarang", "Poltekkes Tasikmalaya", "SMKN 7 Bandung", "SMK Nusa Bhakti Bandung", "Universitas Diponegoro (UNDIP)", "Universitas Islam Bandung (UNISBA)", "Universitas Maranatha", "Universitas Sriwijaya", "Universitas Siliwangi Tasikmalaya", "Universitas Telkom", "Stikes Karsa Husada Garut", "Universitas Logistik dan Bisnis Internasional (ULBI)", "Universitas Bandung", "Stikep PPNI Jabar", "Stikes Budi Luhur", "Stikes RS Dustira", "Stikes Dharma Husada Bandung (DHB)", "Inkes Rajawali", "Inkes Immanuel", "Inkes Pelamonia Makasar", "Poltekkes Palu", "Poltekkes Bandung", "Politeknik Cendrawasih Palu", "Universitas Padjajaran (UNPAD)", "Universitas Pasundan (UNPAS)", "Universitas Sali Al-Aitam", "UNISA Bandung", "Universitas Bhakti Kencana (UBK)", "Universitas Pendidikan Indonesia (UPI)", "Universitas Jenderal Achmad Yani (UNJANI)", "Universitas Borromeus", "Universitas Muhammadiyah Ahmad Dahlan (UM-AD) Palembang", "Universitas Dehasen (UNIVED) Bengkulu", "Stikes Marendeng Majene"];
+    const daftarJurusan = ["Keperawatan Regular", "Keperawatan Non-Regular", "Keperawatan RPL", "Profesi Ners", "Profesi Ners Non-Regular", "Kebidanan Regular", "Kebidanan Non-regular", "Kebidanan RPL", "Profesi Bidan Regular", "Profesi Bidan Non-Regular", "Kedokteran", "Kedokteran / PSPD", "PPDS Anak", "PPDS Anaestesi", "PPDS Bedah", "PPDS Obgyn", "PPDS KFR", "PPDS THT-KL", "PPDS Neurologi", "PPDS IPD", "Kedokteran Gigi", "Anestesi Regular", "Anestesi RPL", "Laboratorium Medis", "Gizi", "Psikologi", "Fisioterapi", "Analis Kesehatan", "Rekam Medik", "Terapi Wicara", "Terapi Okupasi", "Fisika", "Biologi", "Radiologi", "Farmasi", "Computer Science", "Apoteker", "Kesehatan Lingkungan (KESLING)", "Kesehatan Masyarakat"];
 
-window.supabase = supabase
-
-  const daftarKota = [
-
-"Aceh Barat",
-"Ambon",
-"Badung",
-"Balikpapan",
-"Banda Aceh",
-"Bandar Lampung",
-"Bandung",
-"Kab. Bandung",
-"Kab. Bandung Barat",
-"Banjar",
-"Banjarbaru",
-"Banjarmasin",
-"Bantul",
-"Banyuwangi",
-"Batam",
-"Bekasi",
-"Bengkulu",
-"Binjai",
-"Blitar",
-"Bogor",
-"Bojonegoro",
-"Boyolali",
-"Brebes",
-"Ciamis",
-"Cianjur",
-"Cilacap",
-"Cilegon",
-"Cimahi",
-"Cirebon",
-"Denpasar",
-"Depok",
-"Dumai",
-"Garut",
-"Gresik",
-"Jakarta Barat",
-"Jakarta Pusat",
-"Jakarta Selatan",
-"Jakarta Timur",
-"Jakarta Utara",
-"Jambi",
-"Jayapura",
-"Jember",
-"Jombang",
-"Karawang",
-"Kediri",
-"Kendari",
-"Klaten",
-"Kudus",
-"Kupang",
-"Lamongan",
-"Madiun",
-"Magelang",
-"Makassar",
-"Malang",
-"Manado",
-"Mataram",
-"Medan",
-"Metro",
-"Mojokerto",
-"Padang",
-"Palangka Raya",
-"Palembang",
-"Palu",
-"Pasuruan",
-"Pekalongan",
-"Pekanbaru",
-"Pontianak",
-"Probolinggo",
-"Purwakarta",
-"Samarinda",
-"Semarang",
-"Serang",
-"Sidoarjo",
-"Solo (Surakarta)",
-"Subang",
-"Sukabumi",
-"Sumedang",
-"Surabaya",
-"Tangerang",
-"Tangerang Selatan",
-"Tasikmalaya",
-"Tegal",
-"Yogyakarta"
-]
-const daftarInstitusi = [
-
-"ATRO Persada Nusantara Bekasi",
-"Binus University Bandung",
-"Institut Teknologi Bandung (ITB)",
-"Politeknik PIKSI Ganesha",
-"Politkenik Al Islam Bandung",
-"Universitas Indonesia (UI)",
-"Sekolah Tinggi Farmasi Indonesia (STFI)",
-"Universitas Muhammadiyah Bandung (UMB)",
-"Universitas Wahid Hasyim Semarang (UNWAHAS)",
-"UIN Sunan Gunung Djati Bandung",
-"Poltekkes Semarang",
-"Poltekkes Tasikmalaya",
-"SMKN 7 Bandung",
-"SMK Nusa Bhakti Bandung",
-"Universitas Diponegoro (UNDIP)",
-"Universitas Islam Bandung (UNISBA)",
-"Universitas Maranatha",
-"Universitas Sriwijaya",
-"Universitas Siliwangi Tasikmalaya",
-"Universitas Telkom",
-"Stikes Karsa Husada Garut",
-"Universitas Logistik dan Bisnis Internasional (ULBI)",
-"Universitas Bandung",
-"Stikep PPNI Jabar",
-"Stikes Budi Luhur",
-"Stikes RS Dustira",
-"Stikes Dharma Husada Bandung (DHB)",
-"Inkes Rajawali",
-"Inkes Immanuel",
-"Inkes Pelamonia Makasar",
-"Poltekkes Palu",
-"Poltekkes Bandung",
-"Politeknik Cendrawasih Palu",
-"Universitas Padjajaran (UNPAD)",
-"Universitas Pasundan (UNPAS)",
-"Universitas Sali Al-Aitam",
-"UNISA Bandung",
-"Universitas Bhakti Kencana (UBK)",
-"Universitas Pendidikan Indonesia (UPI)",
-"Universitas Jenderal Achmad Yani (UNJANI)",
-"Universitas Borromeus",
-"Universitas Muhammadiyah Ahmad Dahlan (UM-AD) Palembang",
-"Universitas Dehasen (UNIVED) Bengkulu",
-"Stikes Marendeng Majene"
-]
-  const daftarJurusan = [
-
-"Keperawatan Regular",
-"Keperawatan Non-Regular",
-"Keperawatan RPL",
-"Profesi Ners",
-"Profesi Ners Non-Regular",
-"Kebidanan Regular",
-"Kebidanan Non-regular",
-"Kebidanan RPL",
-"Profesi Bidan Regular",
-"Profesi Bidan Non-Regular",
-"Kedokteran",
-"Kedokteran / PSPD",
-"PPDS Anak",
-"PPDS Anaestesi",
-"PPDS Bedah",
-"PPDS Obgyn",
-"PPDS KFR",
-"PPDS THT-KL",
-"PPDS Neurologi",
-"PPDS IPD",
-"Kedokteran Gigi",
-"Anestesi Regular",
-"Anestesi RPL",
-"Laboratorium Medis",
-"Gizi",
-"Psikologi",
-"Fisioterapi",
-"Analis Kesehatan",
-"Rekam Medik",
-"Terapi Wicara",
-"Terapi Okupasi",
-"Fisika",
-"Biologi",
-"Radiologi",
-"Farmasi",
-"Computer Science",
-"Apoteker",
-"Kesehatan Lingkungan (KESLING)",
-"Kesehatan Masyarakat"
-]
-
- function isiDatalist(id, data){
-
-    const list =
-    document.getElementById(id)
-
-    list.innerHTML = data
-        .map(item =>
-            `<option value="${item}">`
-        )
-        .join('')
-}
-
-isiDatalist(
-    'kotaList',
-    daftarKota
-)
-
-isiDatalist(
-    'institusiList',
-    daftarInstitusi
-)
-
-isiDatalist(
-    'jurusanList',
-    daftarJurusan
-) 
-
- document.getElementById('ktp')
-.addEventListener('input', function(){
-
-    this.value =
-    this.value.replace(/\D/g,'')
-
-})
-
-document.getElementById('hp')
-.addEventListener('input', function(){
-
-    this.value =
-    this.value.replace(/\D/g,'')
-
-})
-
- document
-.getElementById('tanggallahir')
-.addEventListener('change', hitungUmur)
-
-function hitungUmur(){
-
-    const tgl =
-    document.getElementById(
-        'tanggallahir'
-    ).value
-
-    if(!tgl) return
-
-    const lahir =
-    new Date(tgl)
-
-    const sekarang =
-    new Date()
-
-    let umur =
-    sekarang.getFullYear()
-    -
-    lahir.getFullYear()
-
-    const bulan =
-    sekarang.getMonth()
-    -
-    lahir.getMonth()
-
-    if(
-        bulan < 0 ||
-        (
-            bulan === 0 &&
-            sekarang.getDate()
-            <
-            lahir.getDate()
-        )
-    ){
-        umur--
+    function isiDatalist(id, data){
+        const list = document.getElementById(id);
+        if(list) {
+            list.innerHTML = data.map(item => `<option value="${item}">`).join('');
+        }
     }
 
-    document
-    .getElementById('umur')
-    .value = umur
-} 
+    isiDatalist('kotaList', daftarKota);
+    isiDatalist('institusiList', daftarInstitusi);
+    isiDatalist('jurusanList', daftarJurusan);
 
-  document
-.getElementById('tanggal_mulai')
-.addEventListener(
-    'change',
-    hitungPeriode
-)
+    document.getElementById('ktp').addEventListener('input', function(){ this.value = this.value.replace(/\D/g,''); });
+    document.getElementById('hp').addEventListener('input', function(){ this.value = this.value.replace(/\D/g,''); });
 
-document
-.getElementById('tanggal_selesai')
-.addEventListener(
-    'change',
-    hitungPeriode
-)
+    document.getElementById('tanggallahir').addEventListener('change', function() {
+        const tgl = this.value;
+        if(!tgl) return;
+        const lahir = new Date(tgl);
+        const sekarang = new Date();
+        let umur = sekarang.getFullYear() - lahir.getFullYear();
+        const bulan = sekarang.getMonth() - lahir.getMonth();
+        if(bulan < 0 || (bulan === 0 && sekarang.getDate() < lahir.getDate())){ umur--; }
+        document.getElementById('umur').value = umur;
+    });
 
-function hitungPeriode(){
+    function hitungPeriode(){
+        const mulai = document.getElementById('tanggal_mulai').value;
+        const selesai = document.getElementById('tanggal_selesai').value;
+        if(!mulai || !selesai) return;
+        document.getElementById('set_periode').value = mulai + ' - ' + selesai;
+    }
+    document.getElementById('tanggal_mulai').addEventListener('change', hitungPeriode);
+    document.getElementById('tanggal_selesai').addEventListener('change', hitungPeriode);
 
-    const mulai =
-    document.getElementById(
-        'tanggal_mulai'
-    ).value
+    function validasiDaftar(value, daftar){
+        return daftar.includes(value);
+    }
 
-    const selesai =
-    document.getElementById(
-        'tanggal_selesai'
-    ).value
+    // ==========================================
+    // VALIDASI INSTAN FILE PAS FOTO (MAX 200 KB)
+    // ==========================================
+    document.getElementById('pasfoto').addEventListener('change', function(){
+        const file = this.files[0];
+        if(!file) return;
 
-    if(
-        !mulai ||
-        !selesai
-    ) return
+        // Cek Ukuran File
+        if(file.size > 200 * 1024) {
+            alert("❌ File Ditolak! Ukuran pas foto melebihi 200 KB.");
+            this.value = ""; // Reset input file
+            resetFotoPlaceholder();
+            return;
+        }
 
-    document
-    .getElementById('set_periode')
-    .value =
-    mulai +
-    ' - ' +
-    selesai
-}
+        const reader = new FileReader();
+        reader.onload = function(e){
+            document.getElementById('fotoPreview').innerHTML = `<img src="${e.target.result}">`;
+        }
+        reader.readAsDataURL(file);
+    });
 
- function validasiDaftar(
-    value,
-    daftar
-){
+    // ==========================================
+    // VALIDASI INSTAN FILE DOKUMEN PDF (MAX 2 MB)
+    // ==========================================
+    document.getElementById('dokumen').addEventListener('change', function(){
+        const file = this.files[0];
+        if(!file) return;
 
-    return daftar.includes(
-        value
-    )
+        // Cek Ukuran File
+        if(file.size > 2 * 1024 * 1024) {
+            alert("❌ File Ditolak! Ukuran dokumen PDF melebihi 2 MB.");
+            this.value = ""; // Reset input file
+            document.getElementById('namaDokumen').innerHTML = '<strong>📄 Klik untuk Upload Dokumen</strong><br><span style="color:#94a3b8; font-size:11px;">Format PDF (Maks. 2 MB)</span>';
+            return;
+        }
 
-}
+        document.getElementById('namaDokumen').innerHTML = '<strong>📄 ' + file.name + '</strong>';
+    });
 
     async function uploadPasFoto(file, nim){
-
-    const fileName =
-    `${nim}-foto-${Date.now()}.jpg`
-
-    const { data, error } =
-    await supabase
-    .storage
-    .from('pasfoto')
-    .upload(fileName, file)
-
-    if(error){
-        throw error
+        const fileName = `${nim}-foto-${Date.now()}.jpg`;
+        const { data, error } = await supabase.storage.from('pasfoto').upload(fileName, file);
+        if(error) throw error;
+        const { data: urlData } = supabase.storage.from('pasfoto').getPublicUrl(fileName);
+        return urlData.publicUrl;
     }
-
-    const { data: urlData } =
-    supabase
-    .storage
-    .from('pasfoto')
-    .getPublicUrl(fileName)
-
-    return urlData.publicUrl
-}
 
     async function uploadDokumen(file, nim){
-
-    const fileName =
-    `${nim}-dokumen-${Date.now()}.pdf`
-
-    const { data, error } =
-    await supabase
-    .storage
-    .from('dokumen')
-    .upload(fileName, file)
-
-    if(error){
-        throw error
+        const fileName = `${nim}-dokumen-${Date.now()}.pdf`;
+        const { data, error } = await supabase.storage.from('dokumen').upload(fileName, file);
+        if(error) throw error;
+        const { data: urlData } = supabase.storage.from('dokumen').getPublicUrl(fileName);
+        return urlData.publicUrl;
     }
 
-    const { data: urlData } =
-    supabase
-    .storage
-    .from('dokumen')
-    .getPublicUrl(fileName)
+    document.getElementById('btnSimpan').addEventListener('click', async () => {
+        const tombol = document.getElementById('btnSimpan');
+        try {
+            tombol.innerText = 'Menyimpan...';
+            setFormDisabled(true);
 
-    return urlData.publicUrl
-}
+            const bagian = document.getElementById('bagian').value;
+            const jenis = document.getElementById('jenis').value;
+            const tanggal_mulai = document.getElementById('tanggal_mulai').value;
+            const tanggal_selesai = document.getElementById('tanggal_selesai').value;
+            const set_periode = document.getElementById('set_periode').value;
+            const namasekolah = document.getElementById('namasekolah').value;
+            const jurusan = document.getElementById('jurusan').value;
+            const alamatsekolah = document.getElementById('alamatsekolah').value;
+            const jenjangpend = document.getElementById('jenjangpend').value;
+            const nama = document.getElementById('nama').value;
+            const nim = document.getElementById('nim').value;
+            const ktp = document.getElementById('ktp').value;
+            const agama = document.getElementById('agama').value;
+            const kelamin = document.getElementById('kelamin').value;
+            const hp = document.getElementById('hp').value;
+            const tempatlahir = document.getElementById('tempatlahir').value;
+            const tanggallahir = document.getElementById('tanggallahir').value;
+            const umur = Number(document.getElementById('umur').value);
+            const alamat = document.getElementById('alamat').value;
+            const kelurahan = document.getElementById('kelurahan').value;
 
-    
-  
+            // Validasi kelengkapan form utama
+            if(!bagian || !jenis || !nama || !nim || !ktp) {
+                throw new Error('Mohon isi data utama pendaftaran Anda terlebih dahulu');
+            }
 
-  window.simpan = async () => {
+            if(!validasiDaftar(tempatlahir, daftarKota)){ throw new Error('Tempat lahir harus dipilih dari daftar kota'); }
+            if(!validasiDaftar(alamatsekolah, daftarKota)){ throw new Error('Kota institusi harus dipilih dari daftar'); }
+            if(!validasiDaftar(namasekolah, daftarInstitusi)){ throw new Error('Institusi harus dipilih dari daftar'); }
+            if(!validasiDaftar(jurusan, daftarJurusan)){ throw new Error('Jurusan harus dipilih dari daftar'); }
+            if(umur < 14){ throw new Error('Usia minimal pendaftar adalah 14 tahun'); }
 
-    const tombol =
-    document.getElementById('btnSimpan')
+            const fileFoto = document.getElementById('pasfoto').files[0];
+            const fileDokumen = document.getElementById('dokumen').files[0];
 
-    try {
+            if(!fileFoto){ throw new Error("Pas foto wajib diupload"); }
+            if(!fileDokumen){ throw new Error("Dokumen wajib diupload"); }
 
-        tombol.innerText = 'Menyimpan...'
-        setFormDisabled(true)
+            const pasfoto_url = await uploadPasFoto(fileFoto, nim);
+            const dokumen_url = await uploadDokumen(fileDokumen, nim);
 
-        // =========================
-        // AMBIL DATA INPUT
-        // =========================
-        const bagian = document.getElementById('bagian').value
-        const jenis = document.getElementById('jenis').value
-        const tanggal_mulai = document.getElementById('tanggal_mulai').value
-        const tanggal_selesai = document.getElementById('tanggal_selesai').value
-        const set_periode = document.getElementById('set_periode').value
-        const namasekolah = document.getElementById('namasekolah').value
-        const jurusan = document.getElementById('jurusan').value
-        const alamatsekolah = document.getElementById('alamatsekolah').value
-        const jenjangpend = document.getElementById('jenjangpend').value
-        const nama = document.getElementById('nama').value
-        const nim = document.getElementById('nim').value
-        const ktp = document.getElementById('ktp').value
-        const agama = document.getElementById('agama').value
-        const kelamin = document.getElementById('kelamin').value
-        const hp = document.getElementById('hp').value
-        const tempatlahir = document.getElementById('tempatlahir').value
-        const tanggallahir = document.getElementById('tanggallahir').value
-        const umur = Number(document.getElementById('umur').value)
-        const alamat = document.getElementById('alamat').value
-        const kelurahan = document.getElementById('kelurahan').value
+            const { error } = await supabase.from('pesertadidik').insert([{
+                bagian, jenis, tanggal_mulai, tanggal_selesai, set_periode,
+                namasekolah, jurusan, alamatsekolah, jenjangpend,
+                nama, nim, ktp, agama, kelamin, hp,
+                tempatlahir, tanggallahir, umur, alamat, kelurahan,
+                pasfoto_url, dokumen_url
+            }]);
 
-        // =========================
-        // VALIDASI DATA TEKS
-        // =========================
-        if(!validasiDaftar(tempatlahir, daftarKota)){
-            throw new Error('Tempat lahir harus dipilih dari daftar kota')
+            if(error) throw error;
+
+            alert('Data pendaftaran berhasil disimpan!');
+            clearForm();
+
+        } catch(err){
+            console.error(err);
+            alert(err.message || 'Terjadi kesalahan sistem');
+        } finally {
+            setFormDisabled(false);
+            tombol.innerText = 'SIMPAN DATA';
         }
+    });
 
-        if(!validasiDaftar(alamatsekolah, daftarKota)){
-            throw new Error('Kota institusi harus dipilih dari daftar')
-        }
-
-        if(!validasiDaftar(namasekolah, daftarInstitusi)){
-            throw new Error('Institusi harus dipilih dari daftar')
-        }
-
-        if(!validasiDaftar(jurusan, daftarJurusan)){
-            throw new Error('Jurusan harus dipilih dari daftar')
-        }
-
-        if(umur < 14){
-            throw new Error('Usia minimal 14 tahun')
-        }
-
-        // =========================
-        // AMBIL FILE (HARUS DI SINI!)
-        // =========================
-        const fileFoto =
-        document.getElementById('pasfoto').files[0]
-
-        const fileDokumen =
-        document.getElementById('dokumen').files[0]
-
-        if(!fileFoto){
-            throw new Error("Pas foto wajib diupload")
-        }
-
-        if(!fileDokumen){
-            throw new Error("Dokumen wajib diupload")
-        }
-
-        // =========================
-        // UPLOAD FILE
-        // =========================
-        const pasfoto_url =
-        await uploadPasFoto(fileFoto, nim)
-
-        const dokumen_url =
-        await uploadDokumen(fileDokumen, nim)
-
-        // =========================
-        // INSERT DATABASE
-        // =========================
-        const { error } =
-        await supabase
-        .from('pesertadidik')
-        .insert([{
-
-            bagian,
-            jenis,
-            tanggal_mulai,
-            tanggal_selesai,
-            set_periode,
-
-            namasekolah,
-            jurusan,
-            alamatsekolah,
-            jenjangpend,
-
-            nama,
-            nim,
-            ktp,
-
-            agama,
-            kelamin,
-            hp,
-
-            tempatlahir,
-            tanggallahir,
-            umur,
-
-            alamat,
-            kelurahan,
-
-            pasfoto_url,
-            dokumen_url
-
-        }])
-
-        if(error){
-            throw error
-        }
-
-        // =========================
-        // SUCCESS
-        // =========================
-        alert('Data berhasil disimpan')
-
-        clearForm()
-
-    } catch(err){
-
-        console.error(err)
-
-        alert(err.message || 'Terjadi kesalahan')
-
-    } finally {
-
-        setFormDisabled(false)
-        tombol.innerText = 'SIMPAN'
-
+    function setFormDisabled(status){
+        const elements = document.querySelectorAll('input, select, textarea, button');
+        elements.forEach(el => { el.disabled = status; });
     }
-}
 
-   function setFormDisabled(status){
+    function resetFotoPlaceholder() {
+        document.getElementById('fotoPreview').innerHTML = `
+            <div class="foto-placeholder">
+                <span style="font-size: 24px;">📷</span><br>
+                <strong>Klik untuk upload foto</strong><br>
+                <span style="color:#94a3b8; font-size:11px;">Rasio 2x3 (Maks 200 KB)<br>Format JPG/JPEG</span>
+            </div>`;
+    }
 
-    const elements =
-    document.querySelectorAll(
-        'input, select, textarea, button'
-    )
-
-    elements.forEach(el => {
-
-        el.disabled = status
-
-    })
-
-}
-
-   function clearForm(){
-
-    document
-    .querySelectorAll(
-        'input, textarea'
-    )
-    .forEach(el => {
-
-        if(
-            el.type !== 'button' &&
-            el.type !== 'submit'
-        ){
-            el.value = ''
-        }
-
-    })
-
-    document
-    .querySelectorAll(
-        'select'
-    )
-    .forEach(el => {
-
-        el.selectedIndex = 0
-
-    })
-
-} 
-  
+    function clearForm(){
+        document.querySelectorAll('input, textarea').forEach(el => {
+            if(el.type !== 'button' && el.type !== 'submit'){ el.value = ''; }
+        });
+        document.querySelectorAll('select').forEach(el => { el.selectedIndex = 0; });
+        resetFotoPlaceholder();
+        document.getElementById('namaDokumen').innerHTML = '<strong>📄 Klik untuk Upload Dokumen</strong><br><span style="color:#94a3b8; font-size:11px;">Format PDF (Maks. 2 MB)</span>';
+    } 
 </script>
 
 </body>
