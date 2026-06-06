@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Management Peserta Didik</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+
+/* =========================
+   THEME BIRU MEDIS
+========================= */
+
+:root{
+    --sidebar-bg:#0f4c81;
+    --sidebar-hover:#1666ac;
+    --primary:#0f4c81;
+    --body-bg:#f4f7fb;
+}
+
+body{
+    background:var(--body-bg);
+    overflow-x:hidden;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:260px;
+    height:100vh;
+    background:var(--sidebar-bg);
+    color:white;
+    transition:.3s;
+    z-index:1000;
+}
+
+.sidebar.collapsed{
+    width:80px;
+}
+
+.logo-area{
+    padding:20px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.logo-area img{
+    width:70px;
+}
+
+.logo-title{
+    margin-top:10px;
+    font-weight:600;
+    font-size:15px;
+    line-height:1.3;
+}
+
+.sidebar.collapsed .logo-title{
+    display:none;
+}
+
+.menu a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:white;
+    text-decoration:none;
+    padding:12px 20px;
+}
+
+.menu a:hover{
+    background:var(--sidebar-hover);
+}
+
+.sidebar.collapsed .menu span{
+    display:none;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    margin-left:260px;
+    transition:.3s;
+}
+
+.main.expanded{
+    margin-left:80px;
+}
+
+.topbar{
+    height:70px;
+    background:white;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+}
+
+.toggle-btn{
+    border:none;
+    background:none;
+    font-size:24px;
+    color:var(--primary);
+}
+
+.page-title{
+    font-weight:600;
+    margin-left:15px;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:25px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.stat-card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+
+.stat-icon{
+    width:60px;
+    height:60px;
+    border-radius:14px;
+    background:#e8f2fc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    color:var(--primary);
+}
+
+.stat-number{
+    font-size:30px;
+    font-weight:700;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+    .sidebar{ left:-260px; }
+    .sidebar.mobile-show{ left:0; }
+    .main{ margin-left:0 !important; }
+}
+
+.table td{
+    vertical-align:middle;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+    <div class="logo-area">
+        <img src="assets/img/rsudbk.png">
+        <div class="logo-title">
+            Management<br>
+            Peserta Didik
+        </div>
+    </div>
+
+    <div class="menu">
+
+        <a href="dashboard.html">
+            <i class="bi bi-house-door"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="peserta.html">
+            <i class="bi bi-people"></i>
+            <span>Data Peserta</span>
+        </a>
+
+        <a href="pengaturan_pendaftaran.html">
+            <i class="bi bi-gear"></i>
+            <span>Pengaturan</span>
+        </a>
+
+        <a href="#" id="btnLogout">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+
+    <div class="topbar">
+
+        <button class="toggle-btn" id="toggleSidebar">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div class="page-title">
+            Data Peserta Didik
+        </div>
+
+    </div>
+
+    <div class="content">
+
+    <!-- STATISTIK -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-4">
+            <div class="card stat-card p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <div class="text-secondary">
+                            Total Peserta
+                        </div>
+
+                        <div
+                            class="stat-number"
+                            id="totalPesertaCard">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="stat-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card stat-card p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <div class="text-secondary">
+                            Total Institusi
+                        </div>
+
+                        <div
+                            class="stat-number"
+                            id="totalInstitusiCard">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="stat-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card stat-card p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <div class="text-secondary">
+                            Total Gelombang
+                        </div>
+
+                        <div
+                            class="stat-number"
+                            id="totalGelombangCard">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="stat-icon">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FILTER -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <div class="row g-3">
+
+                <div class="col-lg-3">
+                    <input
+                        type="text"
+                        id="search"
+                        class="form-control"
+                        placeholder="Cari NIM / Nama">
+                </div>
+
+                <div class="col-lg-3">
+                    <select
+                        id="filterJurusan"
+                        class="form-select">
+                        <option value="">
+                            Semua Jurusan
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-lg-3">
+                    <select
+                        id="filterInstitusi"
+                        class="form-select">
+                        <option value="">
+                            Semua Institusi
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-lg-3">
+                    <select
+                        id="filterGelombang"
+                        class="form-select">
+                        <option value="">
+                            Semua Gelombang
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="mt-3">
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="resetFilter()">
+
+                    Reset Filter
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABEL -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white">
+
+            <strong>
+                Data Peserta Didik
+            </strong>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>No</th>
+                        <th>NIM</th>
+                        <th>Nama</th>
+                        <th>Institusi</th>
+                        <th>Jurusan</th>
+                        <th>Gelombang</th>
+                        <th>Aksi</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+        <!-- KONTEN PAGE MASUK DI SINI -->
+
+    </div>
+
+</div>
+
+<script type="module">
+
+import { createClient }
+from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+'https://lleabupwwoacnhkgqrby.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZWFidXB3d29hY25oa2dxcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODcxMTMsImV4cCI6MjA5NTY2MzExM30.lROS6ezfc-SCo3tm0T_H3GU0rF-MCuiq1Fg5DuTZzl4'
+);
+
+let allData = []
+
+// =========================
+// INIT LOAD SEKALI
+// =========================
+async function init(){
+
+const { data, error } =
+await supabase
+.from('pesertadidik')
+.select('*')
+
+if(error){
+alert(error.message)
+return
+}
+
+allData = data
+
+document.getElementById(
+'totalPesertaCard'
+).innerText =
+data.length;
+
+document.getElementById(
+'totalInstitusiCard'
+).innerText =
+new Set(
+data
+.map(x => x.namasekolah)
+.filter(Boolean)
+).size;
+
+document.getElementById(
+'totalGelombangCard'
+).innerText =
+new Set(
+data
+.map(x => x.gelombang)
+.filter(Boolean)
+).size;
+
+fillSelects()
+applyFilter()
+
+}
+
+init()
+
+// =========================
+// FILTER FUNCTION (LOCAL)
+// =========================
+function applyFilter(){
+
+const search =
+document.getElementById('search').value.toLowerCase()
+
+const jurusan =
+document.getElementById('filterJurusan').value
+
+const institusi =
+document.getElementById('filterInstitusi').value
+
+const gelombang =
+document.getElementById('filterGelombang').value
+
+let result = allData
+
+if(search){
+result = result.filter(x =>
+(x.nama || '').toLowerCase().includes(search) ||
+(x.nim || '').toLowerCase().includes(search)
+)
+}
+
+if(jurusan){
+result = result.filter(x => x.jurusan === jurusan)
+}
+
+if(institusi){
+result = result.filter(x => x.namasekolah === institusi)
+}
+
+if(gelombang){
+result = result.filter(x => x.gelombang === gelombang)
+}
+
+renderTable(result)
+
+document.getElementById('totalPeserta').innerText =
+result.length
+
+}
+
+// =========================
+// RENDER TABLE
+// =========================
+function renderTable(data){
+
+document.getElementById('tableBody').innerHTML =
+data.map((row,i)=>`
+
+<tr>
+
+<td>${i+1}</td>
+
+<td>${row.nim || '-'}</td>
+
+<td>${row.nama || '-'}</td>
+
+<td>${row.namasekolah || '-'}</td>
+
+<td>${row.jurusan || '-'}</td>
+
+<td>
+    <span class="badge bg-primary">
+        ${row.gelombang || '-'}
+    </span>
+</td>
+
+<td>
+
+<button
+class="btn btn-danger btn-sm"
+onclick="hapus('${row.nim}')">
+
+<i class="bi bi-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+`).join('');
+
+}
+
+// =========================
+// DELETE
+// =========================
+window.hapus = async (nim) => {
+
+if(!confirm("Hapus NIM " + nim + " ?")) return
+
+const { error } =
+await supabase
+.from('pesertadidik')
+.delete()
+.eq('nim', nim)
+
+if(error){
+alert(error.message)
+return
+}
+
+alert("Data terhapus")
+
+// refresh local data
+init()
+
+}
+
+// =========================
+// FILL DROPDOWN
+// =========================
+function fillSelects(){
+
+fill('filterJurusan',
+[...new Set(allData.map(x => x.jurusan))])
+
+fill('filterInstitusi',
+[...new Set(allData.map(x => x.namasekolah))])
+
+fill('filterGelombang',
+[...new Set(allData.map(x => x.gelombang))])
+
+}
+
+function fill(id, arr){
+
+document.getElementById(id).innerHTML =
+`<option value="">Semua</option>` +
+arr.filter(Boolean).map(v =>
+`<option value="${v}">${v}</option>`
+).join('')
+
+}
+
+// =========================
+// RESET FILTER
+// =========================
+window.resetFilter = () => {
+
+document.getElementById('search').value = ''
+document.getElementById('filterJurusan').value = ''
+document.getElementById('filterInstitusi').value = ''
+document.getElementById('filterGelombang').value = ''
+
+applyFilter()
+
+}
+
+// =========================
+// EVENT LISTENERS
+// =========================
+document.getElementById('search')
+.addEventListener('input', applyFilter)
+
+document.getElementById('filterJurusan')
+.addEventListener('change', applyFilter)
+
+document.getElementById('filterInstitusi')
+.addEventListener('change', applyFilter)
+
+document.getElementById('filterGelombang')
+.addEventListener('change', applyFilter)
+
+
+// SESSION CHECK
+const { data: { session } } =
+await supabase.auth.getSession();
+
+if(!session){
+    location.href='login.html';
+}
+
+// SIDEBAR
+document.getElementById('toggleSidebar')
+.addEventListener('click',()=>{
+
+    const sidebar =
+    document.getElementById('sidebar');
+
+    const main =
+    document.getElementById('main');
+
+    if(window.innerWidth<=768){
+        sidebar.classList.toggle('mobile-show');
+    } else {
+        sidebar.classList.toggle('collapsed');
+        main.classList.toggle('expanded');
+    }
+
+});
+
+// LOGOUT
+document.getElementById('btnLogout')
+.addEventListener('click',async(e)=>{
+
+    e.preventDefault();
+
+    if(!confirm('Logout?')) return;
+
+    await supabase.auth.signOut();
+
+    location.replace('index.html');
+
+});
+
+</script>
+
+</body>
+</html>
