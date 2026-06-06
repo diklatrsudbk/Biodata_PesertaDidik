@@ -5,56 +5,161 @@
 <title>Login Admin</title>
 
 <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
-    font-family:Arial,sans-serif;
-    background:#f4f6f9;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(
+        135deg,
+        #eaf3ff,
+        #f4f7fb
+    );
+    min-height:100vh;
+}
+
+.login-container{
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    padding:20px;
 }
 
 .card{
+    width:100%;
+    max-width:400px;
     background:white;
-    padding:30px;
-    border-radius:12px;
-    width:320px;
-    box-shadow:0 2px 12px rgba(0,0,0,.1);
+    padding:35px;
+    border-radius:24px;
+    text-align:center;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.08);
+}
+
+.logo{
+    width:90px;
+    margin-bottom:15px;
+}
+
+h2{
+    color:#0f4c81;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    color:#64748b;
+    margin-bottom:25px;
 }
 
 input{
     width:100%;
-    padding:10px;
-    margin-bottom:10px;
-    box-sizing:border-box;
+    padding:14px;
+    border:1px solid #dbe3ec;
+    border-radius:12px;
+    margin-bottom:15px;
+    font-size:14px;
+    outline:none;
 }
 
-button{
+input:focus{
+    border-color:#0f4c81;
+}
+
+.btn-login{
     width:100%;
-    padding:10px;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#0f4c81;
+    color:white;
+    font-weight:600;
     cursor:pointer;
+    transition:.2s;
+}
+
+.btn-login:hover{
+    background:#1666ac;
+}
+
+.btn-back{
+    display:block;
+    margin-top:12px;
+    padding:14px;
+    border-radius:12px;
+    text-decoration:none;
+    background:#f1f5f9;
+    color:#334155;
+    font-weight:600;
+    transition:.2s;
+}
+
+.btn-back:hover{
+    background:#e2e8f0;
+}
+
+@media(max-width:576px){
+
+    .card{
+        padding:25px;
+    }
+
 }
 </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Login Admin</h2>
+<div class="login-container">
 
-    <input
-        type="email"
-        id="email"
-        placeholder="Email">
+    <div class="card">
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password">
+        <img
+            src="assets/img/rsudbk.png"
+            class="logo"
+            alt="Logo">
 
-    <button onclick="login()">
-        Login
-    </button>
+        <h2>
+            Login Admin
+        </h2>
+
+        <p class="subtitle">
+            Management Peserta Didik
+        </p>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email Admin">
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password">
+
+        <button
+            class="btn-login"
+            onclick="login()">
+
+            Login
+
+        </button>
+
+        <a
+            href="index.html"
+            class="btn-back">
+
+            ← Kembali ke Beranda
+
+        </a>
+
+    </div>
+
 </div>
+
 
 <script type="module">
 
@@ -65,6 +170,14 @@ const supabase = createClient(
     'https://lleabupwwoacnhkgqrby.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZWFidXB3d29hY25oa2dxcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwODcxMTMsImV4cCI6MjA5NTY2MzExM30.lROS6ezfc-SCo3tm0T_H3GU0rF-MCuiq1Fg5DuTZzl4'
 )
+
+const {
+    data: { session }
+} = await supabase.auth.getSession();
+
+if (session) {
+    location.replace('dashboard.html');
+}
 
 window.login = async () => {
 
@@ -85,7 +198,7 @@ window.login = async () => {
         return
     }
 
-    location.href = 'admin.html'
+    location.replace('dashboard.html');
 }
 
 </script>
