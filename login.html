@@ -185,7 +185,7 @@ window.login = async () => {
     const email =
     document.getElementById('email').value
 
-    const password =p
+    const password =
     document.getElementById('password').value
 
     const { error } =
@@ -196,12 +196,11 @@ window.login = async () => {
 
     if(error){
         alert(error.message)
-        return
+        return;
     }
 
     location.replace('dashboard.html');
 }
-
 </script>
 
 </body>
