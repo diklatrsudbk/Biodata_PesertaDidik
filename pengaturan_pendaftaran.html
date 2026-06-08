@@ -170,6 +170,21 @@ body{
     box-shadow:0 4px 20px rgba(0,0,0,.06);
 }
 
+    .current-card{
+    background:#f8fbff;
+    border:2px solid #dbeafe;
+}
+
+.current-card p{
+    margin-bottom:18px;
+}
+
+.current-card strong{
+    color:#0f4c81;
+}
+
+    
+
 .badge-open{
     background:#16a34a;
 }
@@ -261,7 +276,7 @@ body{
 
             <div class="row">
 
-                <div class="col-lg-8">
+                <div class="col-12 col-lg-8">
 
                     <div class="card info-card p-4">
 
@@ -279,6 +294,12 @@ body{
 
                             <datalist id="gelombangList"></datalist>
                         </div>
+                        <div class="alert alert-info mt-3">
+
+    Pilih atau ketik gelombang terlebih dahulu
+    untuk mengaktifkan pengaturan waktu.
+
+</div>
 
                         
 
@@ -289,9 +310,10 @@ body{
                             </label>
 
                             <input
-                                type="datetime-local"
-                                id="buka"
-                                class="form-control">
+    type="datetime-local"
+    id="buka"
+    class="form-control"
+    disabled>
 
                         </div>
 
@@ -302,9 +324,10 @@ body{
                             </label>
 
                             <input
-                                type="datetime-local"
-                                id="tutup"
-                                class="form-control">
+    type="datetime-local"
+    id="tutup"
+    class="form-control"
+    disabled>
 
                         </div>
 
@@ -320,9 +343,9 @@ body{
 
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-12 col-lg-4 mt-3 mt-lg-0">
 
-                    <div class="card info-card p-4">
+                    <div class="card info-card current-card p-4">
 
                         <h5 class="mb-3">
                             📋 Pengaturan Saat Ini
@@ -510,6 +533,27 @@ document
 
 await loadGelombang();
 await loadInfoPengaturan();
+
+   const gelombangInput =
+    document.getElementById('gelombang');
+
+gelombangInput.addEventListener(
+    'input',
+    () => {
+
+        const adaIsi =
+            gelombangInput.value.trim() !== '';
+
+        document
+            .getElementById('buka')
+            .disabled = !adaIsi;
+
+        document
+            .getElementById('tutup')
+            .disabled = !adaIsi;
+
+    }
+); 
 
 // =====================================
 // SIMPAN PENGATURAN
