@@ -278,21 +278,17 @@
             display:inline-flex;
             align-items:center;
             gap:8px;
-
             padding:10px 16px;
-
             background:#0f4c81;
             color:white;
-
             text-decoration:none;
             border-radius:10px;
-
             font-weight:600;
         }
 
         .btn-back:hover{
             background:#1666ac;
-}
+        }
     </style>
 </head>
 <body>
@@ -303,16 +299,8 @@
         <a href="login.html">🔒 Admin</a>
     </div>   
     <div class="top-navigation">
-
-                <a
-                    href="index.html"
-                    class="btn-back">
-
-                    ← Kembali ke Beranda
-
-                </a>
-
-            </div>
+        <a href="index.html" class="btn-back">← Kembali ke Beranda</a>
+    </div>
 
     <div class="logo-container">
         <img src="assets\img\rsudbk.png" alt="Logo Institusi">
@@ -365,15 +353,15 @@
         <h2>Data Institusi</h2>
 
         <label for="namasekolah">Nama Institusi</label>
-        <input list="institusiList" id="namasekolah" placeholder="Ketik minimal 1 huruf...">
+        <input list="institusiList" id="namasekolah" placeholder="Ketik minimal 1 huruf..." autocomplete="off">
         <div id="error-namasekolah" class="error-msg">⚠️ Pilih nama institusi yang terdaftar di sistem</div>
 
         <label for="jurusan">Jurusan</label>
-        <input list="jurusanList" id="jurusan" placeholder="Ketik minimal 1 huruf...">
+        <input list="jurusanList" id="jurusan" placeholder="Ketik minimal 1 huruf..." autocomplete="off">
         <div id="error-jurusan" class="error-msg">⚠️ Pilih jurusan yang terdaftar di sistem</div>
 
         <label for="alamatsekolah">Kota Institusi</label>
-        <input list="kotaList" id="alamatsekolah" placeholder="Ketik nama kota...">
+        <input list="kotaList" id="alamatsekolah" placeholder="Ketik nama kota..." autocomplete="off">
         <div id="error-alamatsekolah" class="error-msg">⚠️ Pilih kota yang terdaftar di sistem</div>
 
         <label for="jenjangpend">Jenjang Pendidikan</label>
@@ -439,7 +427,7 @@
                 <input type="text" id="hp" inputmode="tel">
 
                 <label for="tempatlahir">Tempat Lahir</label>
-                <input list="kotaList" id="tempatlahir" placeholder="Ketik kota lahir...">
+                <input list="kotaList" id="tempatlahir" placeholder="Ketik kota lahir..." autocomplete="off">
                 <div id="error-tempatlahir" class="error-msg">⚠️ Pilih kota lahir yang terdaftar di sistem</div>
 
                 <label for="tanggallahir">Tanggal Lahir</label>
@@ -484,456 +472,364 @@
     );
     window.supabase = supabase;
 
+    let GELOMBANG_SEKARANG = '';
 
+    async function cekStatusPendaftaran() {
+        const { data, error } = await supabase
+            .from('pengaturan_pendaftaran')
+            .select('*')
+            .eq('id', 1)
+            .single();
 
-// ==========================================
-// CEK STATUS PENDAFTARAN
-// ==========================================
+        if (error) {
+            console.error(error);
+            document.querySelector('.container').innerHTML = `
+                <div class="section">
+                    <h2>⚠️ Sistem Tidak Tersedia</h2>
+                    <p>Gagal mengambil pengaturan pendaftaran.</p>
+                </div>
+            `;
+            return false;
+        }
 
-let GELOMBANG_SEKARANG = '';
+        GELOMBANG_SEKARANG = data.gelombang;
+        const sekarang = new Date();
+        const buka = new Date(data.buka_pendaftaran);
+        const tutup = new Date(data.tutup_pendaftaran);
 
-async function cekStatusPendaftaran() {
+        const formatTanggal = (tanggal) => {
+            return tanggal.toLocaleString('id-ID', {
+                dateStyle: 'full',
+                timeStyle: 'short'
+            });
+        };
 
-    const { data, error } = await supabase
-        .from('pengaturan_pendaftaran')
-        .select('*')
-        .eq('id', 1)
-        .single();
+        let status = '';
+        let warna = '';
+        let icon = '';
 
-    if (error) {
-
-        console.error(error);
+        if (sekarang < buka) {
+            status = 'Pendaftaran Belum Dibuka';
+            warna = '#f59e0b';
+            icon = '⏳';
+        } else if (sekarang > tutup) {
+            status = 'Pendaftaran Sudah Ditutup';
+            warna = '#dc2626';
+            icon = '🔒';
+        } else {
+            return true;
+        }
 
         document.querySelector('.container').innerHTML = `
-            <div class="section">
-                <h2>⚠️ Sistem Tidak Tersedia</h2>
-                <p>Gagal mengambil pengaturan pendaftaran.</p>
+            <div class="admin-link">
+                <a href="login.html">🔒 Admin</a>
+            </div>
+            <div class="logo-container">
+                <img src="assets/img/rsudbk.png" alt="Logo Institusi">
+            </div>
+            <h1>PENDAFTARAN PESERTA DIDIK</h1>
+            <div class="section" style="text-align:center;">
+                <div style="font-size:70px; margin-bottom:15px;">${icon}</div>
+                <h2 style="color:${warna}; margin-bottom:20px;">${status}</h2>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:20px; text-align:left;">
+                    <p><strong>Gelombang:</strong> ${data.gelombang}</p>
+                    <hr>
+                    <p><strong>Pendaftaran Dibuka:</strong><br>${formatTanggal(buka)} WIB</p>
+                    <p><strong>Pendaftaran Ditutup:</strong><br>${formatTanggal(tutup)} WIB</p>
+                </div>
+                <div style="margin-top:20px; padding:15px; background:#f1f5f9; border-radius:10px;">
+                    Silakan hubungi admin untuk informasi lebih lanjut.
+                </div>
             </div>
         `;
-
         return false;
     }
 
-    GELOMBANG_SEKARANG = data.gelombang;
+    const pendaftaranAktif = await cekStatusPendaftaran();
 
-    const sekarang = new Date();
-    const buka = new Date(data.buka_pendaftaran);
-    const tutup = new Date(data.tutup_pendaftaran);
-
-    // =====================================
-    // FORMAT TANGGAL
-    // =====================================
-
-    const formatTanggal = (tanggal) => {
-
-        return tanggal.toLocaleString('id-ID', {
-            dateStyle: 'full',
-            timeStyle: 'short'
-        });
-
-    };
-
-    // =====================================
-    // STATUS
-    // =====================================
-
-    let status = '';
-    let warna = '';
-    let icon = '';
-
-    if (sekarang < buka) {
-
-        status = 'Pendaftaran Belum Dibuka';
-        warna = '#f59e0b';
-        icon = '⏳';
-
-    } else if (sekarang > tutup) {
-
-        status = 'Pendaftaran Sudah Ditutup';
-        warna = '#dc2626';
-        icon = '🔒';
-
+    if (!pendaftaranAktif) {
+        console.log('Pendaftaran tidak aktif');
     } else {
+        console.log('Pendaftaran aktif');
 
-        return true;
+        const daftarKota = ["Aceh Barat", "Ambon", "Badung", "Balikpapan", "Banda Aceh", "Bandar Lampung", "Bandung", "Kab. Bandung", "Kab. Bandung Barat", "Banjar", "Banjarbaru", "Banjarmasin", "Bantul", "Banyuwangi", "Batam", "Bekasi", "Bengkulu", "Binjai", "Blitar", "Bogor", "Bojonegoro", "Boyolali", "Brebes", "Ciamis", "Cianjur", "Cilacap", "Cilegon", "Cimahi", "Cirebon", "Denpasar", "Depok", "Dumai", "Garut", "Gresik", "Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Jambi", "Jayapura", "Jember", "Jombang", "Karawang", "Kediri", "Kendari", "Klaten", "Kudus", "Kupang", "Lamongan", "Madiun", "Magelang", "Makassar", "Malang", "Manado", "Mataram", "Medan", "Metro", "Mojokerto", "Padang", "Palangka Raya", "Palembang", "Palu", "Pasuruan", "Pekalongan", "Pekanbaru", "Pontianak", "Probolinggo", "Purwakarta", "Samarinda", "Semarang", "Serang", "Sidoarjo", "Solo (Surakarta)", "Subang", "Sukabumi", "Sumedang", "Surabaya", "Tangerang", "Tangerang Selatan", "Tasikmalaya", "Tegal", "Yogyakarta"];
+        const daftarInstitusi = ["ATRO Persada Nusantara Bekasi", "Binus University Bandung", "Institut Teknologi Bandung (ITB)", "Politeknik PIKSI Ganesha", "Politkenik Al Islam Bandung", "Universitas Indonesia (UI)", "Sekolah Tinggi Farmasi Indonesia (STFI)", "Universitas Muhammadiyah Bandung (UMB)", "Universitas Wahid Hasyim Semarang (UNWAHAS)", "UIN Sunan Gunung Djati Bandung", "Poltekkes Semarang", "Poltekkes Tasikmalaya", "SMKN 7 Bandung", "SMK Nusa Bhakti Bandung", "Universitas Diponegoro (UNDIP)", "Universitas Islam Bandung (UNISBA)", "Universitas Maranatha", "Universitas Sriwijaya", "Universitas Siliwangi Tasikmalaya", "Universitas Telkom", "Stikes Karsa Husada Garut", "Universitas Logistik dan Bisnis Internasional (ULBI)", "Universitas Bandung", "Stikep PPNI Jabar", "Stikes Budi Luhur", "Stikes RS Dustira", "Stikes Dharma Husada Bandung (DHB)", "Inkes Rajawali", "Inkes Immanuel", "Inkes Pelamonia Makasar", "Poltekkes Palu", "Poltekkes Bandung", "Politeknik Cendrawasih Palu", "Universitas Padjajaran (UNPAD)", "Universitas Pasundan (UNPAS)", "Universitas Sali Al-Aitam", "UNISA Bandung", "Universitas Bhakti Kencana (UBK)", "Universitas Pendidikan Indonesia (UPI)", "Universitas Jenderal Achmad Yani (UNJANI)", "Universitas Borromeus", "Universitas Muhammadiyah Ahmad Dahlan (UM-AD) Palembang", "Universitas Dehasen (UNIVED) Bengkulu", "Stikes Marendeng Majene"];
+        const daftarJurusan = ["Keperawatan Regular", "Keperawatan Non-Regular", "Keperawatan RPL", "Profesi Ners", "Profesi Ners Non-Regular", "Kebidanan Regular", "Kebidanan Non-regular", "Kebidanan RPL", "Profesi Bidan Regular", "Profesi Bidan Non-Regular", "Kedokteran", "Kedokteran / PSPD", "PPDS Anak", "PPDS Anaestesi", "PPDS Bedah", "PPDS Obgyn", "PPDS KFR", "PPDS THT-KL", "PPDS Neurologi", "PPDS IPD", "Kedokteran Gigi", "Anestesi Regular", "Anestesi RPL", "Laboratorium Medis", "Gizi", "Psikologi", "Fisioterapi", "Analis Kesehatan", "Rekam Medik", "Terapi Wicara", "Terapi Okupasi", "Fisika", "Biologi", "Radiologi", "Farmasi", "Computer Science", "Apoteker", "Kesehatan Lingkungan (KESLING)", "Kesehatan Masyarakat"];
 
-    }
-
-    // =====================================
-    // TAMPILKAN HALAMAN STATUS
-    // =====================================
-
-    document.querySelector('.container').innerHTML = `
-
-        <div class="admin-link">
-            <a href="login.html">🔒 Admin</a>
-        </div>
-
-        <div class="logo-container">
-            <img
-                src="assets/img/rsudbk.png"
-                alt="Logo Institusi">
-        </div>
-
-        <h1>PENDAFTARAN PESERTA DIDIK</h1>
-
-        <div class="section" style="text-align:center;">
-
-            <div style="
-                font-size:70px;
-                margin-bottom:15px;
-            ">
-                ${icon}
-            </div>
-
-            <h2 style="
-                color:${warna};
-                margin-bottom:20px;
-            ">
-                ${status}
-            </h2>
-
-            <div style="
-                background:#f8fafc;
-                border:1px solid #e2e8f0;
-                border-radius:12px;
-                padding:20px;
-                text-align:left;
-            ">
-
-                <p>
-                    <strong>Gelombang:</strong>
-                    ${data.gelombang}
-                </p>
-
-                <hr>
-
-                <p>
-                    <strong>Pendaftaran Dibuka:</strong><br>
-                    ${formatTanggal(buka)} WIB
-                </p>
-
-                <p>
-                    <strong>Pendaftaran Ditutup:</strong><br>
-                    ${formatTanggal(tutup)} WIB
-                </p>
-
-            </div>
-
-            <div style="
-                margin-top:20px;
-                padding:15px;
-                background:#f1f5f9;
-                border-radius:10px;
-            ">
-                Silakan hubungi admin untuk informasi lebih lanjut.
-            </div>
-
-        </div>
-
-    `;
-
-    return false;
-}
-
-// ==========================================
-// JALANKAN
-// ==========================================
-
-const pendaftaranAktif =
-    await cekStatusPendaftaran();
-
-if (!pendaftaranAktif) {
-
-    console.log(
-        'Pendaftaran tidak aktif'
-    );
-
-} else {
-
-    console.log(
-        'Pendaftaran aktif'
-    );
-
-    // lanjutkan script form
-
-    
-        
-    // Database Master Data
-    const daftarKota = ["Aceh Barat", "Ambon", "Badung", "Balikpapan", "Banda Aceh", "Bandar Lampung", "Bandung", "Kab. Bandung", "Kab. Bandung Barat", "Banjar", "Banjarbaru", "Banjarmasin", "Bantul", "Banyuwangi", "Batam", "Bekasi", "Bengkulu", "Binjai", "Blitar", "Bogor", "Bojonegoro", "Boyolali", "Brebes", "Ciamis", "Cianjur", "Cilacap", "Cilegon", "Cimahi", "Cirebon", "Denpasar", "Depok", "Dumai", "Garut", "Gresik", "Jakarta Barat", "Jakarta Pusat", "Jakarta Selatan", "Jakarta Timur", "Jakarta Utara", "Jambi", "Jayapura", "Jember", "Jombang", "Karawang", "Kediri", "Kendari", "Klaten", "Kudus", "Kupang", "Lamongan", "Madiun", "Magelang", "Makassar", "Malang", "Manado", "Mataram", "Medan", "Metro", "Mojokerto", "Padang", "Palangka Raya", "Palembang", "Palu", "Pasuruan", "Pekalongan", "Pekanbaru", "Pontianak", "Probolinggo", "Purwakarta", "Samarinda", "Semarang", "Serang", "Sidoarjo", "Solo (Surakarta)", "Subang", "Sukabumi", "Sumedang", "Surabaya", "Tangerang", "Tangerang Selatan", "Tasikmalaya", "Tegal", "Yogyakarta"];
-    const daftarInstitusi = ["ATRO Persada Nusantara Bekasi", "Binus University Bandung", "Institut Teknologi Bandung (ITB)", "Politeknik PIKSI Ganesha", "Politkenik Al Islam Bandung", "Universitas Indonesia (UI)", "Sekolah Tinggi Farmasi Indonesia (STFI)", "Universitas Muhammadiyah Bandung (UMB)", "Universitas Wahid Hasyim Semarang (UNWAHAS)", "UIN Sunan Gunung Djati Bandung", "Poltekkes Semarang", "Poltekkes Tasikmalaya", "SMKN 7 Bandung", "SMK Nusa Bhakti Bandung", "Universitas Diponegoro (UNDIP)", "Universitas Islam Bandung (UNISBA)", "Universitas Maranatha", "Universitas Sriwijaya", "Universitas Siliwangi Tasikmalaya", "Universitas Telkom", "Stikes Karsa Husada Garut", "Universitas Logistik dan Bisnis Internasional (ULBI)", "Universitas Bandung", "Stikep PPNI Jabar", "Stikes Budi Luhur", "Stikes RS Dustira", "Stikes Dharma Husada Bandung (DHB)", "Inkes Rajawali", "Inkes Immanuel", "Inkes Pelamonia Makasar", "Poltekkes Palu", "Poltekkes Bandung", "Politeknik Cendrawasih Palu", "Universitas Padjajaran (UNPAD)", "Universitas Pasundan (UNPAS)", "Universitas Sali Al-Aitam", "UNISA Bandung", "Universitas Bhakti Kencana (UBK)", "Universitas Pendidikan Indonesia (UPI)", "Universitas Jenderal Achmad Yani (UNJANI)", "Universitas Borromeus", "Universitas Muhammadiyah Ahmad Dahlan (UM-AD) Palembang", "Universitas Dehasen (UNIVED) Bengkulu", "Stikes Marendeng Majene"];
-    const daftarJurusan = ["Keperawatan Regular", "Keperawatan Non-Regular", "Keperawatan RPL", "Profesi Ners", "Profesi Ners Non-Regular", "Kebidanan Regular", "Kebidanan Non-regular", "Kebidanan RPL", "Profesi Bidan Regular", "Profesi Bidan Non-Regular", "Kedokteran", "Kedokteran / PSPD", "PPDS Anak", "PPDS Anaestesi", "PPDS Bedah", "PPDS Obgyn", "PPDS KFR", "PPDS THT-KL", "PPDS Neurologi", "PPDS IPD", "Kedokteran Gigi", "Anestesi Regular", "Anestesi RPL", "Laboratorium Medis", "Gizi", "Psikologi", "Fisioterapi", "Analis Kesehatan", "Rekam Medik", "Terapi Wicara", "Terapi Okupasi", "Fisika", "Biologi", "Radiologi", "Farmasi", "Computer Science", "Apoteker", "Kesehatan Lingkungan (KESLING)", "Kesehatan Masyarakat"];
-
-    // ==========================================
-    // LOGIKA WARNA TEXT INPUT DINAMIS
-    // ==========================================
-    function handleColorChange(el) {
-        if (el.value && el.value.trim() !== "") {
-            el.classList.add('has-value');
-        } else {
-            el.classList.remove('has-value');
-        }
-    }
-
-    document.querySelectorAll('input, select, textarea').forEach(element => {
-        element.addEventListener('input', () => handleColorChange(element));
-        element.addEventListener('change', () => handleColorChange(element));
-    });
-
-    // =======================================================
-    // FILTER SUGGESTION MENUNGGU DIKETIK DAN TOLAK INPUT ASAL
-    // =======================================================
-    function setupSmartAutocomplete(inputId, datalistId, masterData, errorId) {
-        const inputEl = document.getElementById(inputId);
-        const datalistEl = document.getElementById(datalistId);
-        const errorEl = document.getElementById(errorId);
-
-
-        // 1. Baru munculkan data jika user sudah mengetik (Mencegah Lag HP saat klik kosong)
-        inputEl.addEventListener('input', function() {
-            const query = this.value.toLowerCase();
-            if (query.length === 0) {
-                datalistEl.innerHTML = '';
-                return;
-            }
-
-            // Saring data yang cocok saja demi menghemat render layar ponsel
-            const filtered = masterData.filter(item => item.toLowerCase().includes(query));
-            datalistEl.innerHTML = filtered.map(item => `<option value="${item}">`).join('');
-        });
-
-        // 2. Kunci Validasi: Tolak Langsung Jika Ketikan Tidak Ada Dalam Daftar Terdaftar
-        inputEl.addEventListener('blur', function() {
-            const val = this.value.trim();
-            if (val === "") {
-                errorEl.style.display = 'none';
-                return;
-            }
-
-            const isValid = masterData.some(item => item.toLowerCase() === val.toLowerCase());
-            
-            if (!isValid) {
-                errorEl.style.display = 'block';
-                this.value = ''; // Hapus otomatis input asal-asalan
-                this.classList.remove('has-value');
+        function handleColorChange(el) {
+            if (el.value && el.value.trim() !== "") {
+                el.classList.add('has-value');
             } else {
-                // Samakan teks case dengan yang ada di database agar rapi
-                const exactMatch = masterData.find(item => item.toLowerCase() === val.toLowerCase());
-                this.value = exactMatch;
-                errorEl.style.display = 'none';
-                this.classList.add('has-value');
+                el.classList.remove('has-value');
             }
+        }
+
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('input', () => handleColorChange(element));
+            element.addEventListener('change', () => handleColorChange(element));
         });
-    }
 
-    // Daftarkan Autocomplete Pintar
-    setupSmartAutocomplete('namasekolah', 'institusiList', daftarInstitusi, 'error-namasekolah');
-    setupSmartAutocomplete('jurusan', 'jurusanList', daftarJurusan, 'error-jurusan');
-    setupSmartAutocomplete('alamatsekolah', 'kotaList', daftarKota, 'error-alamatsekolah');
-    setupSmartAutocomplete('tempatlahir', 'kotaList', daftarKota, 'error-tempatlahir');
+        // Modifikasi Autocomplete untuk me-return status validasi ke luar script
+        function setupSmartAutocomplete(inputId, datalistId, masterData, errorId) {
+            const inputEl = document.getElementById(inputId);
+            const datalistEl = document.getElementById(datalistId);
+            const errorEl = document.getElementById(errorId);
 
-    // Input Filter Angka Saja
-    document.getElementById('ktp').addEventListener('input', function(){ this.value = this.value.replace(/\D/g,''); });
-    document.getElementById('hp').addEventListener('input', function(){ this.value = this.value.replace(/\D/g,''); });
+            inputEl.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                if (query.length === 0) {
+                    datalistEl.innerHTML = '';
+                    return;
+                }
+                const filtered = masterData.filter(item => item.toLowerCase().includes(query));
+                datalistEl.innerHTML = filtered.map(item => `<option value="${item}">`).join('');
+            });
 
-    // Hitung Umur Otomatis
-    document.getElementById('tanggallahir').addEventListener('change', function() {
-        const tgl = this.value;
-        if(!tgl) return;
-        const lahir = new Date(tgl);
-        const sekarang = new Date();
-        let umur = sekarang.getFullYear() - lahir.getFullYear();
-        const bulan = ClinicalMonthDiff(sekarang, lahir);
-        if(bulan < 0 || (bulan === 0 && sekarang.getDate() < lahir.getDate())){ umur--; }
-        const umurInput = document.getElementById('umur');
-        umurInput.value = umur;
-        handleColorChange(umurInput);
-    });
+            // Ekstrak fungsi validasi agar bisa dipanggil saat blur DAN saat submit data
+            function validateInput() {
+                const val = inputEl.value.trim();
+                if (val === "") {
+                    errorEl.style.display = 'none';
+                    return true; 
+                }
 
-    function ClinicalMonthDiff(d1, d2) {
-        return d1.getMonth() - d2.getMonth();
-    }
-
-    // Hitung Periode Otomatis
-    function hitungPeriode(){
-        const mulai = document.getElementById('tanggal_mulai').value;
-        const selesai = document.getElementById('tanggal_selesai').value;
-        if(!mulai || !selesai) return;
-        const periodeInput = document.getElementById('set_periode');
-        periodeInput.value = mulai + ' - ' + selesai;
-        handleColorChange(periodeInput);
-    }
-    document.getElementById('tanggal_mulai').addEventListener('change', hitungPeriode);
-    document.getElementById('tanggal_selesai').addEventListener('change', hitungPeriode);
-
-    // Validasi Instan File Pas Foto (Maks 200 KB)
-    document.getElementById('pasfoto').addEventListener('change', function(){
-        const file = this.files[0];
-        if(!file) return;
-
-        if(file.size > 200 * 1024) {
-            alert("❌ File Ditolak! Ukuran pas foto melebihi 200 KB.");
-            this.value = ""; 
-            resetFotoPlaceholder();
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(e){
-            document.getElementById('fotoPreview').innerHTML = `<img src="${e.target.result}">`;
-        }
-        reader.readAsDataURL(file);
-    });
-
-    // Validasi Instan File Dokumen PDF (Maks 2 MB)
-    document.getElementById('dokumen').addEventListener('change', function(){
-        const file = this.files[0];
-        if(!file) return;
-
-        if(file.size > 2 * 1024 * 1024) {
-            alert("❌ File Ditolak! Ukuran dokumen PDF melebihi 2 MB.");
-            this.value = ""; 
-            document.getElementById('namaDokumen').innerHTML = '<strong>📄 Klik untuk Upload Dokumen</strong><br><span style="color:#94a3b8; font-size:11px;">Format PDF (Maks. 2 MB)</span>';
-            return;
-        }
-
-        document.getElementById('namaDokumen').innerHTML = '<strong>📄 ' + file.name + '</strong>';
-    });
-
-    async function uploadPasFoto(file, nim){
-        const fileName = `${nim}-foto-${Date.now()}.jpg`;
-        const { data, error } = await supabase.storage.from('pasfoto').upload(fileName, file);
-        if(error) throw error;
-        const { data: urlData } = supabase.storage.from('pasfoto').getPublicUrl(fileName);
-        return urlData.publicUrl;
-    }
-
-    async function uploadDokumen(file, nim){
-        const fileName = `${nim}-dokumen-${Date.now()}.pdf`;
-        const { data, error } = await supabase.storage.from('dokumen').upload(fileName, file);
-        if(error) throw error;
-        const { data: urlData } = supabase.storage.from('dokumen').getPublicUrl(fileName);
-        return urlData.publicUrl;
-    }
-
-    // Submit ke Database Supabase
-    document.getElementById('btnSimpan').addEventListener('click', async () => {
-        const tombol = document.getElementById('btnSimpan');
-        try {
-            // ==========================================
-// VALIDASI ULANG STATUS PENDAFTARAN
-// ==========================================
-
-const { data: settingPendaftaran, error: errorPendaftaran } =
-    await supabase
-        .from('pengaturan_pendaftaran')
-        .select('*')
-        .eq('id', 1)
-        .single();
-
-if (errorPendaftaran) {
-    alert('❌ Gagal memverifikasi status pendaftaran.');
-    return;
-}
-
-const sekarang = new Date();
-const buka = new Date(settingPendaftaran.buka_pendaftaran);
-const tutup = new Date(settingPendaftaran.tutup_pendaftaran);
-
-if (sekarang < buka || sekarang > tutup) {
-    alert(
-        `❌ Pendaftaran ${settingPendaftaran.gelombang} telah ditutup.`
-    );
-    return;
-}
-            tombol.innerText = 'Menyimpan...';
-            setFormDisabled(true);
-
-            const bagian = document.getElementById('bagian').value;
-            const jenis = document.getElementById('jenis').value;
-            const tanggal_mulai = document.getElementById('tanggal_mulai').value;
-            const tanggal_selesai = document.getElementById('tanggal_selesai').value;
-            const set_periode = document.getElementById('set_periode').value;
-            const namasekolah = document.getElementById('namasekolah').value;
-            const jurusan = document.getElementById('jurusan').value;
-            const alamatsekolah = document.getElementById('alamatsekolah').value;
-            const jenjangpend = document.getElementById('jenjangpend').value;
-            const nama = document.getElementById('nama').value;
-            const nim = document.getElementById('nim').value;
-            const ktp = document.getElementById('ktp').value;
-            const agama = document.getElementById('agama').value;
-            const kelamin = document.getElementById('kelamin').value;
-            const hp = document.getElementById('hp').value;
-            const tempatlahir = document.getElementById('tempatlahir').value;
-            const tanggallahir = document.getElementById('tanggallahir').value;
-            const umur = Number(document.getElementById('umur').value);
-            const alamat = document.getElementById('alamat').value;
-            const kelurahan = document.getElementById('kelurahan').value;
-
-            if(!bagian || !jenis || !nama || !nim || !ktp || !namasekolah || !jurusan || !alamatsekolah) {
-                throw new Error('Mohon lengkapi seluruh kolom formulir Anda terlebih dahulu');
+                const isValid = masterData.some(item => item.toLowerCase() === val.toLowerCase());
+                
+                if (!isValid) {
+                    errorEl.style.display = 'block';
+                    inputEl.value = ''; 
+                    inputEl.classList.remove('has-value');
+                    return false;
+                } else {
+                    const exactMatch = masterData.find(item => item.toLowerCase() === val.toLowerCase());
+                    inputEl.value = exactMatch;
+                    errorEl.style.display = 'none';
+                    inputEl.classList.add('has-value');
+                    return true;
+                }
             }
 
-            if(umur < 14){ throw new Error('Usia pendaftar minimal 14 tahun'); }
+            inputEl.addEventListener('blur', validateInput);
+            return validateInput; // Return fungsi ke penampung variabel luar
+        }
 
-            const fileFoto = document.getElementById('pasfoto').files[0];
-            const fileDokumen = document.getElementById('dokumen').files[0];
+        // Simpan fungsi validasi ke dalam variabel objek kontrol
+        const validator = {
+            namasekolah: setupSmartAutocomplete('namasekolah', 'institusiList', daftarInstitusi, 'error-namasekolah'),
+            jurusan: setupSmartAutocomplete('jurusan', 'jurusanList', daftarJurusan, 'error-jurusan'),
+            alamatsekolah: setupSmartAutocomplete('alamatsekolah', 'kotaList', daftarKota, 'error-alamatsekolah'),
+            tempatlahir: setupSmartAutocomplete('tempatlahir', 'kotaList', daftarKota, 'error-tempatlahir')
+        };
 
-            if(!fileFoto){ throw new Error("Pas foto wajib diupload"); }
-            if(!fileDokumen){ throw new Error("Dokumen wajib diupload"); }
+        document.getElementById('ktp').addEventListener('input', function(){ this.value = this.value.replace(/\D/g,''); });
+        document.getElementById('hp').addEventListener('input', function(){ this.value = this.value.replace(/\D/g,''); });
 
-            const pasfoto_url = await uploadPasFoto(fileFoto, nim);
-            const dokumen_url = await uploadDokumen(fileDokumen, nim);
+        document.getElementById('tanggallahir').addEventListener('change', function() {
+            const tgl = this.value;
+            if(!tgl) return;
+            const lahir = new Date(tgl);
+            const sekarang = new Date();
+            let umur = sekarang.getFullYear() - lahir.getFullYear();
+            const bulan = ClinicalMonthDiff(sekarang, lahir);
+            if(bulan < 0 || (bulan === 0 && sekarang.getDate() < lahir.getDate())){ umur--; }
+            const umurInput = document.getElementById('umur');
+            umurInput.value = umur;
+            handleColorChange(umurInput);
+        });
 
-            const { error } = await supabase.from('pesertadidik').insert([{
-                bagian, jenis, tanggal_mulai, tanggal_selesai, set_periode,
-                namasekolah, jurusan, alamatsekolah, jenjangpend,
-                nama, nim, ktp, agama, kelamin, hp,
-                tempatlahir, tanggallahir, umur, alamat, kelurahan,
-                pasfoto_url, dokumen_url, gelombang: GELOMBANG_SEKARANG
-            }]);
+        function ClinicalMonthDiff(d1, d2) {
+            return d1.getMonth() - d2.getMonth();
+        }
 
+        function hitungPeriode(){
+            const mulai = document.getElementById('tanggal_mulai').value;
+            const selesai = document.getElementById('tanggal_selesai').value;
+            if(!mulai || !selesai) return;
+            const periodeInput = document.getElementById('set_periode');
+            periodeInput.value = mulai + ' - ' + selesai;
+            handleColorChange(periodeInput);
+        }
+        document.getElementById('tanggal_mulai').addEventListener('change', hitungPeriode);
+        document.getElementById('tanggal_selesai').addEventListener('change', hitungPeriode);
+
+        document.getElementById('pasfoto').addEventListener('change', function(){
+            const file = this.files[0];
+            if(!file) return;
+
+            if(file.size > 200 * 1024) {
+                alert("❌ File Ditolak! Ukuran pas foto melebihi 200 KB.");
+                this.value = ""; 
+                resetFotoPlaceholder();
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e){
+                document.getElementById('fotoPreview').innerHTML = `<img src="${e.target.result}">`;
+            }
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('dokumen').addEventListener('change', function(){
+            const file = this.files[0];
+            if(!file) return;
+
+            if(file.size > 2 * 1024 * 1024) {
+                alert("❌ File Ditolak! Ukuran dokumen PDF melebihi 2 MB.");
+                this.value = ""; 
+                document.getElementById('namaDokumen').innerHTML = '<strong>📄 Klik untuk Upload Dokumen</strong><br><span style="color:#94a3b8; font-size:11px;">Format PDF (Maks. 2 MB)</span>';
+                return;
+            }
+
+            document.getElementById('namaDokumen').innerHTML = '<strong>📄 ' + file.name + '</strong>';
+        });
+
+        async function uploadPasFoto(file, nim){
+            const fileName = `${nim}-foto-${Date.now()}.jpg`;
+            const { data, error } = await supabase.storage.from('pasfoto').upload(fileName, file);
             if(error) throw error;
-
-            alert('Data pendaftaran berhasil disimpan!');
-            clearForm();
-
-        } catch(err){
-            console.error(err);
-            alert(err.message || 'Terjadi kesalahan sistem');
-        } finally {
-            setFormDisabled(false);
-            tombol.innerText = 'SIMPAN DATA';
+            const { data: urlData } = supabase.storage.from('pasfoto').getPublicUrl(fileName);
+            return urlData.publicUrl;
         }
-    });
 
-    function setFormDisabled(status){
-        const elements = document.querySelectorAll('input, select, textarea, button');
-        elements.forEach(el => { el.disabled = status; });
-    }
+        async function uploadDokumen(file, nim){
+            const fileName = `${nim}-dokumen-${Date.now()}.pdf`;
+            const { data, error } = await supabase.storage.from('dokumen').upload(fileName, file);
+            if(error) throw error;
+            const { data: urlData } = supabase.storage.from('dokumen').getPublicUrl(fileName);
+            return urlData.publicUrl;
+        }
 
-    function resetFotoPlaceholder() {
-        document.getElementById('fotoPreview').innerHTML = `
-            <div class="foto-placeholder">
-                <span style="font-size: 24px;">📷</span><br>
-                <strong>Klik untuk upload foto</strong><br>
-                <span style="color:#94a3b8; font-size:11px;">Rasio 2x3 (Maks 200 KB)<br>Format JPG/JPEG</span>
-            </div>`;
-    }
+        // Submit ke Database Supabase
+        document.getElementById('btnSimpan').addEventListener('click', async () => {
+            const tombol = document.getElementById('btnSimpan');
+            try {
+                // 1. Validasi Status Pendaftaran Terkini Sisi Server
+                const { data: settingPendaftaran, error: errorPendaftaran } = await supabase
+                    .from('pengaturan_pendaftaran')
+                    .select('*')
+                    .eq('id', 1)
+                    .single();
 
-    function clearForm(){
-        document.querySelectorAll('input, textarea').forEach(el => {
-            if(el.type !== 'button' && el.type !== 'submit'){ el.value = ''; }
-            el.classList.remove('has-value');
+                if (errorPendaftaran) {
+                    alert('❌ Gagal memverifikasi status pendaftaran.');
+                    return;
+                }
+
+                const sekarang = new Date();
+                const buka = new Date(settingPendaftaran.buka_pendaftaran);
+                const tutup = new Date(settingPendaftaran.tutup_pendaftaran);
+
+                if (sekarang < buka || sekarang > tutup) {
+                    alert(`❌ Pendaftaran ${settingPendaftaran.gelombang} telah ditutup.`);
+                    return;
+                }
+
+                // 2. Cegah Bypass Autocomplete (Paksa jalankan fungsi validasi master data)
+                const validInstitusi = validator.namasekolah();
+                const validJurusan = validator.jurusan();
+                const validKota = validator.alamatsekolah();
+                const validTempatLahir = validator.tempatlahir();
+
+                if(!validInstitusi || !validJurusan || !validKota || !validTempatLahir) {
+                    throw new Error('Ada pilihan institusi, jurusan, atau kota yang tidak terdaftar di sistem. Silakan periksa kembali ketikan Anda.');
+                }
+
+                tombol.innerText = 'Menyimpan...';
+                setFormDisabled(true);
+
+                // Ambil Nilai dari Form
+                const bagian = document.getElementById('bagian').value;
+                const jenis = document.getElementById('jenis').value;
+                const tanggal_mulai = document.getElementById('tanggal_mulai').value;
+                const tanggal_selesai = document.getElementById('tanggal_selesai').value;
+                const set_periode = document.getElementById('set_periode').value;
+                const namasekolah = document.getElementById('namasekolah').value;
+                const jurusan = document.getElementById('jurusan').value;
+                const alamatsekolah = document.getElementById('alamatsekolah').value;
+                const jenjangpend = document.getElementById('jenjangpend').value;
+                const nama = document.getElementById('nama').value;
+                const nim = document.getElementById('nim').value;
+                const ktp = document.getElementById('ktp').value;
+                const agama = document.getElementById('agama').value;
+                const kelamin = document.getElementById('kelamin').value;
+                const hp = document.getElementById('hp').value;
+                const tempatlahir = document.getElementById('tempatlahir').value;
+                const tanggallahir = document.getElementById('tanggallahir').value;
+                const umurRaw = document.getElementById('umur').value;
+                const alamat = document.getElementById('alamat').value;
+                const kelurahan = document.getElementById('kelurahan').value;
+
+                // 3. Validasi Seluruh Isian Wajib (Diperketat agar tidak ada data kosong yang lolos)
+                if(!bagian || !jenis || !tanggal_mulai || !tanggal_selesai || !namasekolah || 
+                   !jurusan || !alamatsekolah || !jenjangpend || !nama || !nim || !ktp || 
+                   !agama || !kelamin || !hp || !tempatlahir || !tanggallahir || !alamat || !kelurahan) {
+                    throw new Error('Mohon lengkapi seluruh kolom formulir Anda terlebih dahulu.');
+                }
+
+                const umur = Number(umurRaw);
+                if(isNaN(umur) || umur < 14){ throw new Error('Usia pendaftar tidak valid atau minimal berusia 14 tahun.'); }
+
+                const fileFoto = document.getElementById('pasfoto').files[0];
+                const fileDokumen = document.getElementById('dokumen').files[0];
+
+                if(!fileFoto){ throw new Error("Pas foto wajib diupload."); }
+                if(!fileDokumen){ throw new Error("Dokumen wajib diupload."); }
+
+                // Proses Upload ke Supabase Storage
+                const pasfoto_url = await uploadPasFoto(fileFoto, nim);
+                const dokumen_url = await uploadDokumen(fileDokumen, nim);
+
+                // Kirim ke Tabel database
+                const { error } = await supabase.from('pesertadidik').insert([{
+                    bagian, jenis, tanggal_mulai, tanggal_selesai, set_periode,
+                    namasekolah, jurusan, alamatsekolah, jenjangpend,
+                    nama, nim, ktp, agama, kelamin, hp,
+                    tempatlahir, tanggallahir, umur, alamat, kelurahan,
+                    pasfoto_url, dokumen_url, gelombang: GELOMBANG_SEKARANG
+                }]);
+
+                if(error) throw error;
+
+                alert('Data pendaftaran berhasil disimpan!');
+                clearForm();
+
+            } catch(err){
+                console.error(err);
+                alert(err.message || 'Terjadi kesalahan sistem');
+            } finally {
+                setFormDisabled(false);
+                tombol.innerText = 'SIMPAN DATA';
+            }
         });
-        document.querySelectorAll('select').forEach(el => { 
-            el.selectedIndex = 0; 
-            el.classList.remove('has-value');
-        });
-        resetFotoPlaceholder();
-        document.getElementById('namaDokumen').innerHTML = '<strong>📄 Klik untuk Upload Dokumen</strong><br><span style="color:#94a3b8; font-size:11px;">Format PDF (Maks. 2 MB)</span>';
-        document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-    } 
+
+        function setFormDisabled(status){
+            const elements = document.querySelectorAll('input, select, textarea, button');
+            elements.forEach(el => { el.disabled = status; });
+        }
+
+        function resetFotoPlaceholder() {
+            document.getElementById('fotoPreview').innerHTML = `
+                <div class="foto-placeholder">
+                    <span style="font-size: 24px;">📷</span><br>
+                    <strong>Klik untuk upload foto</strong><br>
+                    <span style="color:#94a3b8; font-size:11px;">Rasio 2x3 (Maks 200 KB)<br>Format JPG/JPEG</span>
+                </div>`;
+        }
+
+        function clearForm(){
+            document.querySelectorAll('input, textarea').forEach(el => {
+                if(el.type !== 'button' && el.type !== 'submit'){ el.value = ''; }
+                el.classList.remove('has-value');
+            });
+            document.querySelectorAll('select').forEach(el => { 
+                el.selectedIndex = 0; 
+                el.classList.remove('has-value');
+            });
+            resetFotoPlaceholder();
+            document.getElementById('namaDokumen').innerHTML = '<strong>📄 Klik untuk Upload Dokumen</strong><br><span style="color:#94a3b8; font-size:11px;">Format PDF (Maks. 2 MB)</span>';
+            document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+        } 
     }
 </script>
 
