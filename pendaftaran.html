@@ -3,368 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Registrasi Peserta Didik - RSUD Bandung Kiwari</title>
+    <title>Diklat RSUD Bandung Kiwari Input Biodata Peserta Didik</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .form-label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 0.375rem;
-        }
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            color: #0f172a;
-            background-color: #f8fafc;
-            transition: all 0.2s ease;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: #6366f1;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-        }
-        .form-input:disabled, .form-input[readonly] {
-            background-color: #e2e8f0;
-            color: #64748b;
-            cursor: not-allowed;
-            border-color: #cbd5e1;
-        }
-        .required::after {
-            content: "*";
-            color: #ef4444;
-            margin-left: 0.25rem;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
+        .form-label { display: block; font-size: 0.875rem; font-weight: 600; color: #1e293b; margin-bottom: 0.5rem; }
+        .form-input { width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; font-size: 0.875rem; color: #0f172a; background-color: #ffffff; transition: all 0.2s; }
+        .form-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        .form-input:disabled, .form-input[readonly] { background-color: #e2e8f0; color: #475569; cursor: not-allowed; border-color: #cbd5e1; }
+        .required::after { content: "*"; color: #ef4444; margin-left: 0.25rem; }
+        .glass-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
+        /* Hide arrows from number input */
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { appearance: textfield; -moz-appearance: textfield; }
     </style>
 </head>
 <body class="antialiased text-slate-800 py-6 px-4 sm:px-6 lg:px-8 min-h-screen">
 
-    <div id="app-loading" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+    <!-- Loading Overlay -->
+    <div id="app-loading" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-50/90 backdrop-blur-sm">
         <div class="relative flex justify-center items-center">
-            <div class="absolute animate-ping inline-flex h-16 w-16 rounded-full bg-indigo-400 opacity-20"></div>
-            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+            <div class="absolute animate-ping inline-flex h-16 w-16 rounded-full bg-blue-400 opacity-30"></div>
+            <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
         </div>
-        <p class="mt-4 text-indigo-900 font-semibold text-lg tracking-wide">Memuat Sistem...</p>
-        <p class="text-slate-500 text-sm mt-1">Menghubungkan ke database</p>
+        <p class="mt-4 text-blue-900 font-bold text-lg tracking-wide">Menghubungkan ke Server...</p>
     </div>
 
+    <!-- Peringatan Form Tutup -->
     <div id="form-closed-message" class="hidden max-w-lg mx-auto mt-20 glass-card p-10 rounded-2xl text-center">
-        <div class="bg-red-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-        </div>
+        <i class="bi bi-x-octagon-fill text-5xl text-rose-500 mb-4 block"></i>
         <h2 class="text-2xl font-bold text-slate-800 mb-2">Formulir Ditutup</h2>
-        <p class="text-slate-600">Saat ini tidak ada pendaftaran diklat yang berstatus OPEN. Silakan hubungi admin atau kembali lagi nanti.</p>
+        <p class="text-slate-600">Saat ini tidak ada jadwal pendaftaran diklat yang dibuka.</p>
     </div>
 
-    <div id="main-form-container" class="hidden max-w-5xl mx-auto glass-card rounded-2xl overflow-hidden mb-10">
-        <!-- Header Section -->
-        <div class="bg-gradient-to-r from-indigo-700 to-blue-600 px-6 py-10 sm:px-10 text-center sm:text-left flex flex-col sm:flex-row items-center gap-6 relative overflow-hidden">
-            <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
-            <div class="absolute bottom-0 left-1/2 w-32 h-32 bg-blue-300 opacity-20 rounded-full blur-xl"></div>
-            
-            <div class="bg-white p-3 rounded-xl shadow-lg shrink-0 z-10">
-                <img src="img/logo.png" alt="Logo RSUD Bandung Kiwari" class="h-16 w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/240x80/ffffff/4f46e5?text=RSUD+BANDUNG+KIWARI';">
+    <!-- Main Container -->
+    <div id="main-form-container" class="hidden max-w-4xl mx-auto glass-card rounded-2xl overflow-hidden mb-10 shadow-xl shadow-blue-900/5">
+        
+        <!-- Header -->
+        <div class="bg-white px-6 py-8 sm:px-10 border-b border-slate-200 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+            <div class="bg-white border border-slate-100 p-2 rounded-xl shadow-sm shrink-0 z-10">
+                <img src="img/rsudbk.png" alt="Logo" class="h-16 w-auto object-contain" onerror="this.src='https://placehold.co/240x80/ffffff/2563eb?text=RSUD+BANDUNG+KIWARI';">
             </div>
             <div class="z-10">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Diklat RSUD Bandung Kiwari</h1>
-                <h2 id="nama-acara-title" class="text-lg sm:text-xl font-medium text-indigo-100 mt-1">Input Biodata Peserta Didik</h2>
-                <p class="mt-2 text-blue-100 text-sm bg-black/20 inline-block px-3 py-1 rounded-full border border-white/10">Silakan lengkapi data dengan valid dan benar.</p>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Diklat RSUD Bandung Kiwari</h1>
+                <h2 class="text-lg font-semibold text-blue-600 mt-1">Input Biodata Peserta Didik</h2>
+                <div class="mt-3 flex items-center justify-center sm:justify-start gap-2">
+                    <span class="flex h-2.5 w-2.5 relative">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <p id="nama-acara-title" class="text-sm font-medium text-slate-600"></p>
+                </div>
             </div>
         </div>
 
-        <!-- Form Section -->
-        <form id="registrasiForm" class="p-6 sm:p-10" onsubmit="handleFormSubmit(event)">
-            <input type="hidden" id="id_parent" name="id_parent" value="">
+        <form id="registrasiForm" class="p-6 sm:p-10 bg-white" onsubmit="handleFormSubmit(event)">
             <input type="hidden" id="target_sheet" name="target_sheet" value="">
+            <input type="hidden" id="telpsekolah" name="telpsekolah" value="-">
+            <input type="hidden" id="status_mahasiswa" name="status_mahasiswa" value="-">
+            <input type="hidden" id="id_parent" name="id_parent" value="">
             
-            <!-- Section 1 -->
-            <div class="mb-12">
-                <div class="flex items-center gap-3 mb-6 border-b border-slate-200 pb-3">
-                    <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</div>
-                    <h3 class="text-xl font-bold text-slate-800">Cek NIM & Data Pribadi</h3>
+            <input type="hidden" id="existing_pasfoto" name="existing_pasfoto" value="">
+            <input type="hidden" id="existing_dokumen" name="existing_dokumen" value="">
+            
+            <!-- Kolom Catatan Paling Ujung -->
+            <input type="hidden" id="catatan" name="catatan" value="peserta baru">
+
+            <!-- Section 1: NIM Check (Selalu Tampil Awal) -->
+            <div class="mb-8 p-6 bg-slate-50 border border-slate-200 rounded-xl">
+                <label for="nim" class="form-label required text-base">NIM / NIK Kampus</label>
+                <div class="flex flex-col sm:flex-row gap-3 mt-2">
+                    <div class="relative flex-grow">
+                        <i class="bi bi-person-badge absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                        <input type="text" id="nim" name="nim" class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-semibold" required placeholder="Masukkan NIM Anda">
+                    </div>
+                    <button type="button" id="btn-cek-nim" onclick="cekNIM()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition min-w-[140px] shadow-sm flex items-center justify-center">
+                        <i class="bi bi-search mr-2"></i> Cek Data
+                    </button>
+                    <button type="button" id="btn-reset-nim" onclick="resetFormState()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-6 rounded-lg transition min-w-[120px] flex items-center justify-center">
+                        <i class="bi bi-arrow-counterclockwise mr-2"></i> Reset
+                    </button>
                 </div>
+                <div id="nim-message" class="text-sm mt-3 flex items-center text-slate-500">
+                    <i class="bi bi-info-circle mr-2"></i> Masukkan NIM lalu klik Cek Data untuk melanjutkan.
+                </div>
+            </div>
+
+            <!-- Formulir Utama (Sembunyi sebelum NIM dicek) -->
+            <div id="extended-form-fields" class="hidden transition-all duration-500 opacity-0">
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                    <div class="md:col-span-2 bg-indigo-50/50 p-5 rounded-xl border border-indigo-100 mb-2">
-                        <label for="nim" class="form-label required">NIM (Nomor Induk Mahasiswa)</label>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="nim" name="nim" class="form-input flex-grow shadow-sm" required placeholder="Masukkan NIM Anda">
-                            <button type="button" id="btn-cek-nim" onclick="cekNIM()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-3 px-6 rounded-lg transition duration-200 ease-in-out shadow-sm flex items-center justify-center min-w-[120px]">
-                                <span>Cek Data</span>
-                            </button>
-                        </div>
-                        <p id="nim-message" class="text-sm mt-2 font-medium text-slate-500">Masukkan NIM lalu klik Cek Data untuk auto-fill jika Anda pernah mendaftar.</p>
-                    </div>
-
-                    <div>
-                        <label for="nama" class="form-label required">Nama Lengkap (Sesuai KTP)</label>
-                        <input type="text" id="nama" name="nama" class="form-input" required placeholder="Contoh: Budi Santoso">
-                    </div>
-
-                    <div>
-                        <label for="ktp" class="form-label required">NIK / KTP</label>
-                        <input type="text" id="ktp" name="ktp" class="form-input" required pattern="[0-9]{16}" title="Harus 16 digit angka" placeholder="16 Digit NIK">
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label for="alamat" class="form-label required">Alamat Lengkap (Domisili)</label>
-                        <textarea id="alamat" name="alamat" class="form-input" rows="2" required placeholder="Jalan, RT/RW, dsb."></textarea>
-                    </div>
-
-                    <div>
-                        <label for="kelurahan" class="form-label required">Kelurahan / Desa</label>
-                        <input type="text" id="kelurahan" name="kelurahan" class="form-input" required placeholder="Nama Kelurahan">
-                    </div>
-
-                    <div>
-                        <label for="tempatlahir" class="form-label required">Tempat Lahir (Kota/Kab)</label>
-                        <input list="list_kota" id="tempatlahir" name="tempatlahir" class="form-input" required placeholder="Pilih atau Ketik Kota">
-                        <datalist id="list_kota"></datalist>
-                    </div>
-
-                    <div>
-                        <label for="tanggallahir" class="form-label required">Tanggal Lahir</label>
-                        <input type="date" id="tanggallahir" name="tanggallahir" class="form-input" required onchange="hitungUmur()">
-                        <p class="text-xs text-slate-500 mt-1">Syarat usia minimal: 14 tahun.</p>
-                    </div>
-
-                    <div>
-                        <label for="umur" class="form-label required">Umur (Tahun)</label>
-                        <input type="number" id="umur" name="umur" class="form-input font-bold" required readonly placeholder="Dihitung Otomatis">
-                    </div>
-
-                    <div>
-                        <label for="kelamin" class="form-label required">Jenis Kelamin</label>
-                        <select id="kelamin" name="kelamin" class="form-input" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="Laki-Laki">Laki-Laki</option>
-                            <option value="Perempuan">Perempuan</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="agama" class="form-label required">Agama</label>
-                        <select id="agama" name="agama" class="form-input" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="Islam">Islam</option>
-                            <option value="Kristen">Kristen</option>
-                            <option value="Katolik">Katolik</option>
-                            <option value="Protestan">Protestan</option>
-                            <option value="Hindu">Hindu</option>
-                            <option value="Budha">Budha</option>
-                            <option value="Konghucu">Konghucu</option>
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label for="hp" class="form-label required">No. Handphone (Aktif WhatsApp)</label>
-                        <input type="text" id="hp" name="hp" class="form-input" required placeholder="Contoh: 0812... atau +628..." oninput="validasiHP(this)">
-                        <p id="hp-error" class="text-xs text-red-500 mt-1 hidden font-medium">Format tidak valid. Gunakan awalan 08 atau +62.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 2 -->
-            <div class="mb-12">
-                <div class="flex items-center gap-3 mb-6 border-b border-slate-200 pb-3">
-                    <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</div>
-                    <h3 class="text-xl font-bold text-slate-800">Data Pendidikan</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                    <div class="md:col-span-2">
-                        <label for="namasekolah" class="form-label required">Nama Institusi / Sekolah</label>
-                        <input list="list_institusi" id="namasekolah" name="namasekolah" class="form-input" required placeholder="Pilih atau Ketik Nama Institusi">
-                        <datalist id="list_institusi"></datalist>
-                    </div>
-
-                    <div>
-                        <label for="jurusan" class="form-label required">Jurusan / Program Studi</label>
-                        <input list="list_jurusan" id="jurusan" name="jurusan" class="form-input" required placeholder="Pilih atau Ketik Jurusan">
-                        <datalist id="list_jurusan"></datalist>
-                    </div>
-
-                    <div>
-                        <label for="jenjangpend" class="form-label required">Jenjang Pendidikan</label>
-                        <select id="jenjangpend" name="jenjangpend" class="form-input" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="SMA">SMA</option>
-                            <option value="SMK">SMK</option>
-                            <option value="D3">D3</option>
-                            <option value="D4">D4</option>
-                            <option value="S1">S1</option>
-                            <option value="S2 Pasca Sarjana">S2 Pasca Sarjana</option>
-                            <option value="Profesi">Profesi</option>
-                            <option value="Specialist 1">Specialist 1</option>
-                            <option value="Specialist 2">Specialist 2</option>
-                            <option value="Fellowship">Fellowship</option>
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label for="alamatsekolah" class="form-label required">Alamat Sekolah / Institusi</label>
-                        <textarea id="alamatsekolah" name="alamatsekolah" class="form-input" rows="2" required placeholder="Alamat lengkap kampus/sekolah"></textarea>
-                    </div>
-
-                    <div>
-                        <label for="telpsekolah" class="form-label required">Telp Sekolah</label>
-                        <input type="text" id="telpsekolah" name="telpsekolah" class="form-input text-slate-500" value="-" readonly>
-                    </div>
-
-                    <div>
-                        <label for="status_mahasiswa" class="form-label required">Status Mahasiswa</label>
-                        <input type="text" id="status_mahasiswa" name="status_mahasiswa" class="form-input text-slate-500" value="-" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 3 -->
-            <div class="mb-12">
-                <div class="flex items-center gap-3 mb-6 border-b border-slate-200 pb-3">
-                    <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</div>
-                    <h3 class="text-xl font-bold text-slate-800">Program & Penempatan</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                    <div>
-                        <label for="jenis" class="form-label required">Jenis Kegiatan</label>
-                        <select id="jenis" name="jenis" class="form-input" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="PKL">PKL</option>
-                            <option value="PBL">PBL</option>
-                            <option value="Magang">Magang</option>
-                            <option value="Pembelajaran Luar Kelas">Pembelajaran Luar Kelas</option>
-                            <option value="Resident">Resident</option>
-                            <option value="Hospital Visit">Hospital Visit</option>
-                            <option value="LIC">LIC</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="bagian" class="form-label required">Bagian Penempatan</label>
-                        <select id="bagian" name="bagian" class="form-input" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="Pelayanan Medik">Pelayanan Medik</option>
-                            <option value="Penunjang Medik">Penunjang Medik</option>
-                            <option value="Umum">Umum</option>
-                        </select>
-                        <div class="mt-3 text-xs text-slate-600 bg-blue-50/50 p-4 rounded-lg border border-blue-100 shadow-inner">
-                            <strong class="text-blue-800 text-sm mb-1 block">Panduan Memilih Bagian:</strong>
-                            <ul class="list-disc pl-4 space-y-1">
-                                <li><strong class="text-slate-700">Pelayanan Medik:</strong> Kedokteran, Kebidanan, Keperawatan, Keperawatan Anestesiologi</li>
-                                <li><strong class="text-slate-700">Penunjang Medik:</strong> Farmasi, Gizi, Radiologi, Rekam Medis, Analis, dll.</li>
-                                <li><strong class="text-slate-700">Umum:</strong> Administrasi, Manajemen, Promkes, IT, Keuangan, Teknik.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="tanggal_mulai" class="form-label required">Tanggal Mulai</label>
-                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-input" required onchange="validasiTanggalMulai()">
-                        <p id="tgl-mulai-error" class="text-xs text-red-500 mt-1 hidden font-medium">Tanggal mulai tidak boleh lewat atau hari ini (cek validasi).</p>
-                    </div>
-
-                    <div>
-                        <label for="tanggal_selesai" class="form-label required">Tanggal Selesai</label>
-                        <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-input" required disabled onchange="validasiTanggalSelesai()">
-                        <p id="tgl-selesai-error" class="text-xs text-red-500 mt-1 hidden font-medium">Tanggal selesai harus setelah tanggal mulai.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 4 -->
-            <div class="mb-10">
-                <div class="flex items-center gap-3 mb-6 border-b border-slate-200 pb-3">
-                    <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">4</div>
-                    <h3 class="text-xl font-bold text-slate-800">Unggah Dokumen</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
-                    
-                    <!-- Pasfoto Upload -->
-                    <div>
-                        <label class="form-label required">Pasfoto Berwarna</label>
-                        <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-300 border-dashed rounded-xl hover:border-indigo-400 transition-colors bg-white">
-                            <div class="space-y-2 text-center w-full">
-                                <div id="preview-container" class="hidden mb-4 flex justify-center">
-                                    <div class="w-24 h-36 rounded-md overflow-hidden shadow-lg border-2 border-indigo-100">
-                                        <img id="foto-preview" class="w-full h-full object-cover" src="" alt="Preview">
-                                    </div>
-                                </div>
-                                <svg id="foto-icon" class="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <div class="flex justify-center text-sm text-slate-600">
-                                    <label for="pasfoto" class="relative cursor-pointer bg-white rounded-md font-semibold text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2">
-                                        <span>Pilih Foto (2x3)</span>
-                                        <input id="pasfoto" name="pasfoto" type="file" class="sr-only" accept=".jpg,.jpeg,.png" required onchange="previewFoto(this)">
-                                    </label>
-                                </div>
-                                <p class="text-xs text-slate-500">Format JPEG/JPG/PNG. Max 200KB.</p>
+                <!-- Section 2: Program & Penempatan -->
+                <div class="mb-10 bg-blue-50/30 p-6 rounded-xl border border-blue-100">
+                    <h3 class="text-lg font-bold text-slate-800 mb-5 flex items-center"><i class="bi bi-building-check mr-2 text-blue-600"></i> Penempatan & Waktu</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                        
+                        <div class="md:col-span-2">
+                            <label for="bagian" class="form-label required">Bagian Penempatan</label>
+                            <div class="relative"><i class="bi bi-diagram-3 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <select id="bagian" name="bagian" class="form-input bg-white" required>
+                                    <option value="">-- Pilih Bagian --</option>
+                                    <option value="Pelayanan Medik">Pelayanan Medik</option>
+                                    <option value="Penunjang Medik">Penunjang Medik</option>
+                                    <option value="Umum">Umum</option>
+                                </select>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600 bg-white p-3 rounded border border-slate-200 shadow-sm leading-relaxed">
+                                <span class="font-bold text-slate-800">Panduan Memilih Bagian:</span><br>
+                                <ul class="list-disc pl-4 mt-1 space-y-1">
+                                    <li><strong>Pelayanan Medik:</strong> Kedokteran, Kebidanan, Keperawatan, Keperawatan Anestesiologi.</li>
+                                    <li><strong>Penunjang Medik:</strong> Farmasi, Gizi, Radiologi, Rekam Medis, Analis, dll.</li>
+                                    <li><strong>Umum:</strong> Administrasi, Manajemen, Promkes, IT, Keuangan, Teknik.</li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Dokumen Pendukung Upload -->
-                    <div>
-                        <label class="form-label required">Dokumen Pendukung (PDF)</label>
-                        <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-300 border-dashed rounded-xl hover:border-indigo-400 transition-colors bg-white h-full">
-                            <div class="space-y-2 text-center w-full flex flex-col justify-center">
-                                <svg class="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                </svg>
-                                <div class="flex justify-center text-sm text-slate-600">
-                                    <label for="uploaddokumen" class="relative cursor-pointer bg-white rounded-md font-semibold text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2">
-                                        <span>Pilih File PDF</span>
-                                        <input id="uploaddokumen" name="uploaddokumen" type="file" class="sr-only" accept=".pdf" multiple required onchange="validasiDokumen(this)">
-                                    </label>
-                                </div>
-                                <p class="text-xs text-slate-500">Bisa pilih banyak file sekaligus.<br>Total max 2MB.</p>
-                                <div id="doc-list" class="text-xs text-left text-slate-700 mt-3 max-h-24 overflow-y-auto w-full bg-slate-50 rounded p-2 empty:hidden"></div>
+                        <div class="md:col-span-2">
+                            <label for="jenis" class="form-label required">Jenis Kegiatan</label>
+                            <div class="relative"><i class="bi bi-ui-checks absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <select id="jenis" name="jenis" class="form-input" required>
+                                    <option value="">-- Pilih Jenis --</option>
+                                    <option value="PKL">PKL</option>
+                                    <option value="PBL">PBL</option>
+                                    <option value="Magang">Magang</option>
+                                    <option value="Pembelajaran Luar Kelas">Pembelajaran Luar Kelas</option>
+                                    <option value="Resident">Resident</option>
+                                    <option value="Hospital Visit">Hospital Visit</option>
+                                    <option value="LIC">LIC</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="tanggal_mulai" class="form-label required">Tanggal Mulai</label>
+                            <div class="relative"><i class="bi bi-calendar-play absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 z-10"></i>
+                                <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-input !pl-10" required onchange="validasiTanggalMulai()">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="tanggal_selesai" class="form-label required">Tanggal Selesai</label>
+                            <div class="relative"><i class="bi bi-calendar-check absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 z-10"></i>
+                                <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-input !pl-10" required disabled onchange="validasiTanggalSelesai()">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="pt-8 border-t border-slate-200 flex justify-end">
-                <button type="submit" id="btn-submit" class="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold py-3 px-10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 text-lg">
-                    Kirim Pendaftaran
-                </button>
+                <!-- Section 3: Data Pribadi -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-bold text-slate-800 mb-5 border-b border-slate-100 pb-2 flex items-center"><i class="bi bi-person-lines-fill mr-2 text-blue-600"></i> Data Pribadi</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                        
+                        <!-- Posisikan Foto sebelum Nama -->
+                        <div class="md:col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center gap-6">
+                            <div class="w-32 h-48 border-2 border-slate-300 border-dashed rounded-lg bg-white flex flex-col items-center justify-center relative overflow-hidden group shrink-0 shadow-inner">
+                                <div id="preview-container" class="hidden w-full h-full relative">
+                                    <img id="foto-preview" class="w-full h-full object-cover" src="" alt="Preview">
+                                    <button type="button" onclick="hapusFoto()" class="absolute inset-x-0 bottom-0 bg-rose-600/90 text-white py-2 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <i class="bi bi-trash3 mr-1"></i> <span class="text-xs font-semibold">Hapus</span>
+                                    </button>
+                                </div>
+                                <div id="foto-placeholder" class="text-center w-full px-2">
+                                    <i class="bi bi-person-bounding-box text-3xl text-slate-300 mb-2 block"></i>
+                                    <span class="text-xs text-slate-400 font-medium">Ukuran 2x3</span>
+                                </div>
+                            </div>
+                            <div class="flex-grow text-center sm:text-left">
+                                <label class="form-label required text-base">Pasfoto Berwarna</label>
+                                <p class="text-sm text-slate-500 mb-3">Wajib format <strong>JPEG/JPG/PNG</strong>. Maksimal ukuran <strong>200KB</strong>. Proporsi 2x3.</p>
+                                <label for="pasfoto" class="cursor-pointer bg-white hover:bg-slate-50 text-slate-700 py-2.5 px-5 rounded-lg font-medium text-sm inline-flex items-center border border-slate-300 shadow-sm transition">
+                                    <i class="bi bi-camera mr-2 text-blue-600"></i> Unggah Foto
+                                    <input id="pasfoto" name="pasfoto" type="file" class="sr-only" accept=".jpg,.jpeg,.png" required onchange="previewFoto(this)">
+                                </label>
+                                <p id="foto-status-msg" class="text-sm text-emerald-600 mt-3 hidden font-semibold bg-emerald-50 inline-block px-3 py-1 rounded-full"><i class="bi bi-check-circle-fill mr-1"></i>Foto lama digunakan</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="nama" class="form-label required">Nama Lengkap (Sesuai KTP)</label>
+                            <div class="relative"><i class="bi bi-person absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" id="nama" name="nama" class="form-input" required placeholder="Contoh: Budi Santoso">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="ktp" class="form-label required">NIK / KTP</label>
+                            <div class="relative"><i class="bi bi-credit-card absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <!-- Hanya izinkan input angka -->
+                                <input type="text" id="ktp" name="ktp" class="form-input" required pattern="[0-9]{16}" title="Harus 16 digit angka" placeholder="16 Digit NIK" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16)">
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="alamat" class="form-label required">Alamat Lengkap (Domisili)</label>
+                            <div class="relative"><i class="bi bi-house-door absolute left-3.5 top-3.5 text-slate-400"></i>
+                                <textarea id="alamat" name="alamat" class="form-input" rows="2" required placeholder="Jalan, RT/RW, No. Rumah..."></textarea>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="kelurahan" class="form-label required">Kelurahan / Desa</label>
+                            <div class="relative"><i class="bi bi-signpost-split absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" id="kelurahan" name="kelurahan" class="form-input" required placeholder="Kelurahan">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="tempatlahir" class="form-label required">Tempat Lahir (Kota/Kab)</label>
+                            <div class="relative"><i class="bi bi-pin-map absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input list="list_kota" id="tempatlahir" name="tempatlahir" class="form-input" required placeholder="Pilih/Ketik Kota">
+                                <datalist id="list_kota"></datalist>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="tanggallahir" class="form-label required">Tanggal Lahir</label>
+                            <div class="relative"><i class="bi bi-calendar-event absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 z-10"></i>
+                                <input type="date" id="tanggallahir" name="tanggallahir" class="form-input !pl-10" required onchange="hitungUmur()">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="umur" class="form-label required">Umur (Tahun)</label>
+                            <div class="relative"><i class="bi bi-hourglass-split absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="number" id="umur" name="umur" class="form-input font-bold bg-slate-100" required readonly placeholder="Otomatis">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="kelamin" class="form-label required">Jenis Kelamin</label>
+                            <div class="relative"><i class="bi bi-gender-ambiguous absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <select id="kelamin" name="kelamin" class="form-input" required>
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Laki-Laki">Laki-Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="agama" class="form-label required">Agama</label>
+                            <div class="relative"><i class="bi bi-star absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <select id="agama" name="agama" class="form-input" required>
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Kristen">Kristen</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Protestan">Protestan</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Budha">Budha</option>
+                                    <option value="Konghucu">Konghucu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="hp" class="form-label required">No. Handphone (Aktif WhatsApp)</label>
+                            <div class="relative"><i class="bi bi-whatsapp absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" id="hp" name="hp" class="form-input" required placeholder="Contoh: 0812... atau +62812..." oninput="validasiHP(this)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Pendidikan -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-bold text-slate-800 mb-5 border-b border-slate-100 pb-2 flex items-center"><i class="bi bi-mortarboard-fill mr-2 text-blue-600"></i> Data Pendidikan</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                        <div class="md:col-span-2">
+                            <label for="namasekolah" class="form-label required">Nama Institusi / Sekolah</label>
+                            <div class="relative"><i class="bi bi-bank absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input list="list_institusi" id="namasekolah" name="namasekolah" class="form-input" required placeholder="Pilih/Ketik Institusi">
+                                <datalist id="list_institusi"></datalist>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="jurusan" class="form-label required">Jurusan / Program Studi</label>
+                            <div class="relative"><i class="bi bi-journal-bookmark absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input list="list_jurusan" id="jurusan" name="jurusan" class="form-input" required placeholder="Pilih/Ketik Jurusan">
+                                <datalist id="list_jurusan"></datalist>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="jenjangpend" class="form-label required">Jenjang Pendidikan</label>
+                            <div class="relative"><i class="bi bi-award absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <select id="jenjangpend" name="jenjangpend" class="form-input" required>
+                                    <option value="">-- Pilih --</option>
+                                    <option value="SMA">SMA</option>
+                                    <option value="SMK">SMK</option>
+                                    <option value="D3">D3</option>
+                                    <option value="D4">D4</option>
+                                    <option value="S1">S1</option>
+                                    <option value="S2 Pasca Sarjana">S2 Pasca Sarjana</option>
+                                    <option value="Profesi">Profesi</option>
+                                    <option value="Specialist 1">Specialist 1</option>
+                                    <option value="Specialist 2">Specialist 2</option>
+                                    <option value="Fellowship">Fellowship</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="alamatsekolah" class="form-label required">Alamat Sekolah / Institusi (Kota)</label>
+                            <div class="relative"><i class="bi bi-map absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <!-- Pakai list kota untuk alamat sekolah -->
+                                <input list="list_kota" id="alamatsekolah" name="alamatsekolah" class="form-input" required placeholder="Pilih/Ketik Kota Institusi">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Dokumen -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-bold text-slate-800 mb-5 border-b border-slate-100 pb-2 flex items-center"><i class="bi bi-file-earmark-pdf-fill mr-2 text-blue-600"></i> Dokumen Pendukung</h3>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 text-center">
+                        <label class="form-label required mb-3">Upload File Pengantar / Dokumen Pendukung</label>
+                        <i class="bi bi-cloud-arrow-up text-4xl text-slate-400 mb-3 block"></i>
+                        <label for="uploaddokumen" class="cursor-pointer bg-white rounded border border-slate-300 px-4 py-2 font-semibold text-blue-600 hover:bg-blue-50 shadow-sm transition inline-block">
+                            <i class="bi bi-file-earmark-plus mr-1"></i> Pilih File PDF
+                            <input id="uploaddokumen" name="uploaddokumen" type="file" class="sr-only" accept=".pdf" multiple required onchange="validasiDokumen(this)">
+                        </label>
+                        <p class="text-xs text-slate-500 mt-3">Wajib format <strong>PDF</strong>. Bisa pilih lebih dari 1 file sekaligus. Total maksimal <strong>2MB</strong>.</p>
+                        
+                        <div id="doc-status-msg" class="text-sm text-emerald-600 mt-4 hidden font-semibold bg-emerald-50 py-2 rounded-lg border border-emerald-100">
+                            <i class="bi bi-check-circle-fill mr-1"></i>Dokumen lama digunakan. Upload baru HANYA jika ingin mengganti.
+                        </div>
+                        <div id="doc-list" class="text-sm text-left text-slate-700 mt-4 max-h-32 overflow-y-auto w-full bg-white rounded-lg p-3 border border-slate-200 empty:hidden shadow-inner"></div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-6 border-t border-slate-200 flex justify-end">
+                    <button type="submit" id="btn-submit" class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 px-10 rounded-xl shadow-lg shadow-blue-500/30 transition-all text-lg flex items-center justify-center">
+                        <i class="bi bi-send-fill mr-2"></i> Kirim Pendaftaran
+                    </button>
+                </div>
             </div>
         </form>
     </div>
 
     <script>
-        // --- 1. KONFIGURASI PENTING ---
-        // GANTI URL DI BAWAH INI DENGAN URL DEPLOYMENT WEB APP ANDA YANG TERBARU
+        // MASUKKAN URL DEPLOYMENT APPS SCRIPT ANDA DI SINI
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq5dX0_8AR8v9IiB19mBH4ik6el7SpevH-jSETHbRCWt3I35aQEXIXBHVkUcvfEqNB/exec"; 
-
+        
         let filesToUpload = { pasfoto: null, dokumen: [] };
 
-        // --- 2. INISIALISASI & FETCH DATA DARI SPREADSHEET ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Set min date for tanggal_mulai to today
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('tanggal_mulai').setAttribute('min', today);
-
-            // Fetch Data
             fetchInitData();
         });
 
@@ -376,28 +368,27 @@
                 if (result.status === 'success') {
                     const data = result.data;
                     
-                    // Populate Datalists
                     populateDatalist('list_kota', data.kota);
                     populateDatalist('list_institusi', data.institusi);
                     populateDatalist('list_jurusan', data.jurusan);
 
-                    // Check Form Status
                     document.getElementById('app-loading').classList.add('hidden');
                     if (data.openEvent) {
                         document.getElementById('target_sheet').value = data.openEvent.NAMA_SHEET;
-                        document.getElementById('nama-acara-title').innerText = data.openEvent.NAMA_ACARA + " (" + data.openEvent.NAMA_SHEET + ")";
+                        document.getElementById('nama-acara-title').innerText = data.openEvent.NAMA_ACARA + " | " + data.openEvent.NAMA_SHEET;
                         document.getElementById('main-form-container').classList.remove('hidden');
                     } else {
                         document.getElementById('form-closed-message').classList.remove('hidden');
                     }
-                } else {
-                    throw new Error(result.message);
-                }
+                } else throw new Error(result.message);
             } catch (error) {
                 document.getElementById('app-loading').innerHTML = `
-                    <p class="text-red-500 font-bold mb-2">Gagal Menghubungkan ke Server</p>
-                    <p class="text-sm text-gray-600">${error.message}</p>
-                    <button onclick="location.reload()" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded">Coba Lagi</button>
+                    <div class="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200">
+                        <i class="bi bi-exclamation-triangle-fill text-5xl text-rose-500 mb-3 block"></i>
+                        <p class="text-slate-800 font-bold text-lg mb-1">Koneksi Server Gagal</p>
+                        <p class="text-sm text-slate-500 mb-4">${error.message}</p>
+                        <button onclick="location.reload()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg shadow">Muat Ulang</button>
+                    </div>
                 `;
             }
         }
@@ -413,78 +404,194 @@
             });
         }
 
-        // --- 3. LOGIKA FORM ---
         async function cekNIM() {
-            const nimInput = document.getElementById('nim').value.trim();
+            const nimInputEl = document.getElementById('nim');
+            const nimInput = nimInputEl.value.trim();
             const btnCek = document.getElementById('btn-cek-nim');
+            const btnReset = document.getElementById('btn-reset-nim');
             const msgEl = document.getElementById('nim-message');
+            const extendedForm = document.getElementById('extended-form-fields');
+            const currentSheet = document.getElementById('target_sheet').value;
             
             if(!nimInput) {
-                Swal.fire('Peringatan', 'Harap masukkan NIM terlebih dahulu sebelum mengecek.', 'warning');
-                return;
+                Swal.fire('Input NIM', 'Silakan masukkan NIM terlebih dahulu!', 'warning'); return;
             }
 
-            btnCek.innerHTML = '<div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>';
+            btnCek.innerHTML = '<div class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div> Sedang mencari...';
             btnCek.disabled = true;
-            msgEl.className = "text-sm mt-2 font-medium text-indigo-600";
-            msgEl.innerText = "Mencari data di server...";
+            nimInputEl.readOnly = true; 
+            msgEl.innerHTML = `<i class="bi bi-hourglass-split mr-2 text-blue-500"></i> <span class="text-blue-600 font-medium">Mencari riwayat data...</span>`;
 
             try {
                 const response = await fetch(GOOGLE_SCRIPT_URL + '?action=check_nim&nim=' + encodeURIComponent(nimInput));
                 const result = await response.json();
 
-                if (result.status === 'success') {
+                if (result.status === 'success' && result.found) {
                     const data = result.data;
-                    document.getElementById('nama').value = data.nama;
-                    document.getElementById('ktp').value = data.ktp;
-                    document.getElementById('alamat').value = data.alamat;
-                    document.getElementById('kelurahan').value = data.kelurahan;
-                    document.getElementById('tempatlahir').value = data.tempatlahir;
-                    document.getElementById('tanggallahir').value = data.tanggallahir;
-                    document.getElementById('kelamin').value = data.kelamin;
-                    document.getElementById('agama').value = data.agama;
-                    document.getElementById('namasekolah').value = data.namasekolah;
-                    document.getElementById('jurusan').value = data.jurusan;
-                    document.getElementById('jenjangpend').value = data.jenjangpend;
-                    document.getElementById('hp').value = data.hp;
+                    let isEdit = (data.target_sheet_history === currentSheet);
+                    
+                    if (isEdit) {
+                        document.getElementById('catatan').value = 'mode edit';
+                        msgEl.innerHTML = `<div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-lg w-full flex items-center"><i class="bi bi-info-circle-fill mr-2"></i> NIM sudah terdaftar di event ini. Mengaktifkan Mode Edit.</div>`;
+                    } else {
+                        document.getElementById('catatan').value = 'pernah terdaftar di ' + data.target_sheet_history;
+                        msgEl.innerHTML = `<div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-2 rounded-lg w-full flex items-center"><i class="bi bi-check-circle-fill mr-2"></i> Riwayat ditemukan di event: ${data.target_sheet_history}. Auto-fill diaktifkan.</div>`;
+                    }
+
+                    // Mapping Data Teks & Select
+                    document.getElementById('nama').value = data.nama || '';
+                    document.getElementById('ktp').value = data.ktp || '';
+                    document.getElementById('alamat').value = data.alamat || '';
+                    document.getElementById('kelurahan').value = data.kelurahan || '';
+                    document.getElementById('tempatlahir').value = data.tempatlahir || '';
+                    document.getElementById('tanggallahir').value = data.tanggallahir || '';
+                    document.getElementById('kelamin').value = data.kelamin || '';
+                    document.getElementById('agama').value = data.agama || '';
+                    document.getElementById('namasekolah').value = data.namasekolah || '';
+                    document.getElementById('jurusan').value = data.jurusan || '';
+                    document.getElementById('jenjangpend').value = data.jenjangpend || '';
+                    document.getElementById('alamatsekolah').value = data.alamatsekolah || '';
+                    document.getElementById('bagian').value = data.bagian || '';
+                    document.getElementById('jenis').value = data.jenis || '';
+                    document.getElementById('hp').value = data.hp || '';
+                    
+                    if(data.tanggal_mulai) {
+                        document.getElementById('tanggal_mulai').value = data.tanggal_mulai;
+                        document.getElementById('tanggal_selesai').disabled = false;
+                    }
+                    if(data.tanggal_selesai) document.getElementById('tanggal_selesai').value = data.tanggal_selesai;
+
+                    // ==========================================
+                        // MAPPING PASFOTO LAMA
+                        // ==========================================
+                        if (data.pasfoto) {
+                            document.getElementById('existing_pasfoto').value = data.pasfoto;
+                            
+                            // Konversi Link GDrive ke CDN Google Content agar bisa di-preview di <img>
+                            let viewUrl = data.pasfoto;
+                            const matchId = viewUrl.match(/[-\w]{25,}/);
+                            if (matchId && viewUrl.includes('drive.google.com')) {
+                                viewUrl = `https://lh3.googleusercontent.com/d/${matchId[0]}`;
+                            }
+                            
+                            const fotoPreview = document.getElementById('foto-preview');
+                            fotoPreview.src = viewUrl;
+
+                            document.getElementById('preview-container').classList.remove('hidden');
+                            document.getElementById('foto-placeholder').classList.add('hidden');
+                            document.getElementById('pasfoto').removeAttribute('required'); // Tidak wajib upload jika sudah ada foto lama
+                            document.getElementById('foto-status-msg').classList.remove('hidden');
+                        }
+
+                        // Mapping Dokumen PDF / Folder Drive
+                            if (data.uploaddokumen || data.dokumen) {
+                                const rawDoc = data.uploaddokumen || data.dokumen;
+                                document.getElementById('existing_dokumen').value = rawDoc;
+                                
+                                // Matikan required pada input file baru
+                                document.getElementById('uploaddokumen').removeAttribute('required');
+                                document.getElementById('doc-status-msg').classList.remove('hidden');
+
+                                const listEl = document.getElementById('doc-list');
+                                listEl.innerHTML = ''; // Clear container
+
+                                // Pecah link jika berupa multiple file (dipisahkan \n)
+                                const docLinks = String(rawDoc).split('\n').filter(link => link.trim() !== '');
+
+                                docLinks.forEach((link, idx) => {
+                                    const isFolder = link.includes('/folders/');
+                                    const iconClass = isFolder ? 'bi-folder-fill text-amber-500' : 'bi-file-earmark-pdf-fill text-red-500';
+                                    const labelText = isFolder ? `Folder Dokumen Pendukung ${docLinks.length > 1 ? (idx + 1) : ''}` : `Dokumen Pendukung ${docLinks.length > 1 ? (idx + 1) : ''}`;
+
+                                    listEl.innerHTML += `
+                                        <div class="p-2 mb-1.5 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between hover:bg-slate-100 transition">
+                                            <div class="flex items-center space-x-2 truncate">
+                                                <i class="bi ${iconClass} text-lg"></i>
+                                                <span class="text-xs font-semibold text-slate-700 truncate">${labelText}</span>
+                                            </div>
+                                            <a href="${link.trim()}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-2.5 py-1 text-xs font-bold text-blue-600 bg-white border border-blue-200 rounded-md hover:bg-blue-50 shadow-sm ml-2 shrink-0">
+                                                <i class="bi bi-box-arrow-up-right mr-1"></i> Buka
+                                            </a>
+                                        </div>
+                                    `;
+                                });
+}
                     
                     hitungUmur();
                     
-                    msgEl.className = "text-sm mt-2 font-medium text-emerald-600";
-                    msgEl.innerText = `Data ditemukan! Pernah terdaftar di: ${data.target_sheet_history}.`;
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Data Ditemukan',
-                        text: `Data riwayat pendaftaran Anda (${data.target_sheet_history}) telah dimuat. Silakan lengkapi sisa form.`
-                    });
                 } else {
-                    msgEl.className = "text-sm mt-2 font-medium text-slate-500";
-                    msgEl.innerText = "NIM belum pernah terdaftar. Silakan isi form baru.";
+                    document.getElementById('catatan').value = 'peserta baru';
+                    msgEl.innerHTML = `<div class="bg-slate-100 border border-slate-200 text-slate-600 px-4 py-2 rounded-lg w-full flex items-center"><i class="bi bi-person-plus-fill mr-2 text-slate-400"></i> NIM Baru. Silakan lengkapi formulir pendaftaran.</div>`;
                 }
+                
+                extendedForm.classList.remove('hidden');
+                setTimeout(() => { extendedForm.classList.remove('opacity-0'); }, 50);
+                
+                btnCek.classList.add('hidden');
+                btnReset.classList.remove('hidden');
+                btnReset.classList.add('flex');
+
             } catch (error) {
-                msgEl.className = "text-sm mt-2 font-medium text-red-500";
-                msgEl.innerText = "Gagal mencari data.";
+                msgEl.innerHTML = `<div class="text-rose-500 text-sm mt-3"><i class="bi bi-x-circle mr-1"></i> Gagal mencari data.</div>`;
                 Swal.fire('Error', 'Gagal mencari NIM: ' + error.message, 'error');
+                nimInputEl.readOnly = false;
             } finally {
-                btnCek.innerHTML = 'Cek Data';
+                btnCek.innerHTML = '<i class="bi bi-search mr-2"></i> Cek Data';
                 btnCek.disabled = false;
             }
+        }
+
+        function resetFormState() {
+            Swal.fire({
+                title: 'Reset Pendaftaran?', text: "Formulir akan dibersihkan untuk mencari NIM baru.", icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#2563eb', cancelButtonColor: '#e11d48', confirmButtonText: 'Ya, Reset'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const targetSheet = document.getElementById('target_sheet').value;
+                    document.getElementById('registrasiForm').reset();
+                    
+                    // Kembalikan Hidden Value Default
+                    document.getElementById('target_sheet').value = targetSheet; 
+                    document.getElementById('catatan').value = 'peserta baru';
+                    document.getElementById('existing_pasfoto').value = '';
+                    document.getElementById('existing_dokumen').value = '';
+                    
+                    // Reset UI Foto & Doc
+                    document.getElementById('pasfoto').setAttribute('required', 'required');
+                    document.getElementById('uploaddokumen').setAttribute('required', 'required');
+                    document.getElementById('foto-status-msg').classList.add('hidden');
+                    document.getElementById('doc-status-msg').classList.add('hidden');
+                    
+                    hapusFoto();
+                    document.getElementById('doc-list').innerHTML = '';
+                    document.getElementById('tanggal_selesai').disabled = true;
+                    
+                    // Reset NIM Input UI
+                    const nimInput = document.getElementById('nim');
+                    nimInput.readOnly = false;
+                    document.getElementById('btn-cek-nim').classList.remove('hidden');
+                    document.getElementById('btn-reset-nim').classList.add('hidden');
+                    document.getElementById('btn-reset-nim').classList.remove('flex');
+                    
+                    document.getElementById('extended-form-fields').classList.add('opacity-0');
+                    setTimeout(() => { document.getElementById('extended-form-fields').classList.add('hidden'); }, 500);
+                    
+                    document.getElementById('nim-message').innerHTML = `<i class="bi bi-info-circle mr-2"></i> Masukkan NIM lalu klik Cek Data untuk melanjutkan.`;
+                }
+            });
         }
 
         function hitungUmur() {
             const tglLahirVal = document.getElementById('tanggallahir').value;
             if(!tglLahirVal) return;
-            
             const birthDate = new Date(tglLahirVal);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
             const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
             
             if(age < 14) {
-                Swal.fire('Validasi Umur', 'Usia minimal pendaftar adalah 14 tahun.', 'error');
+                Swal.fire('Peringatan Umur', 'Usia minimal pendaftar adalah 14 tahun.', 'error');
                 document.getElementById('tanggallahir').value = '';
                 document.getElementById('umur').value = '';
                 return;
@@ -493,43 +600,28 @@
         }
 
         function validasiHP(input) {
+            input.value = input.value.replace(/[^0-9+]/g, '');
             const val = input.value;
-            const errorEl = document.getElementById('hp-error');
-            const valid = val === '' || /^(\+62|08)[0-9]*$/.test(val);
-            
-            if(!valid) {
-                errorEl.classList.remove('hidden');
-                input.setCustomValidity('Format tidak valid');
-            } else {
-                errorEl.classList.add('hidden');
-                input.setCustomValidity('');
-            }
+            if(val !== '' && !/^(\+62|08)[0-9]*$/.test(val)) {
+                input.setCustomValidity('Awali dengan 08 atau +62');
+            } else input.setCustomValidity('');
         }
 
         function validasiTanggalMulai() {
             const tglMulaiVal = document.getElementById('tanggal_mulai').value;
             const tglSelesaiInput = document.getElementById('tanggal_selesai');
-            const errorEl = document.getElementById('tgl-mulai-error');
-            
-            if(!tglMulaiVal) {
-                tglSelesaiInput.disabled = true;
-                return;
-            }
+            if(!tglMulaiVal) { tglSelesaiInput.disabled = true; return; }
 
-            const today = new Date();
-            today.setHours(0,0,0,0);
+            const today = new Date(); today.setHours(0,0,0,0);
             const mulai = new Date(tglMulaiVal);
 
             if(mulai < today) {
-                errorEl.classList.remove('hidden');
+                Swal.fire('Tanggal Tidak Valid', 'Tanggal mulai tidak boleh kurang dari hari ini.', 'error');
                 document.getElementById('tanggal_mulai').value = '';
-                tglSelesaiInput.disabled = true;
-                tglSelesaiInput.value = '';
+                tglSelesaiInput.disabled = true; tglSelesaiInput.value = '';
             } else {
-                errorEl.classList.add('hidden');
                 tglSelesaiInput.disabled = false;
                 tglSelesaiInput.setAttribute('min', tglMulaiVal);
-                
                 if(tglSelesaiInput.value) validasiTanggalSelesai();
             }
         }
@@ -537,63 +629,52 @@
         function validasiTanggalSelesai() {
             const tglMulaiVal = document.getElementById('tanggal_mulai').value;
             const tglSelesaiVal = document.getElementById('tanggal_selesai').value;
-            const errorEl = document.getElementById('tgl-selesai-error');
-            
             if(!tglSelesaiVal || !tglMulaiVal) return;
-
-            const mulai = new Date(tglMulaiVal);
-            const selesai = new Date(tglSelesaiVal);
-
-            if(selesai <= mulai) {
-                errorEl.classList.remove('hidden');
+            if(new Date(tglSelesaiVal) <= new Date(tglMulaiVal)) {
+                Swal.fire('Tanggal Tidak Valid', 'Tanggal selesai harus lewat dari tanggal mulai.', 'error');
                 document.getElementById('tanggal_selesai').value = '';
-            } else {
-                errorEl.classList.add('hidden');
             }
         }
 
         function previewFoto(input) {
             const file = input.files[0];
-            const maxAllowedSize = 200 * 1024; // 200 KB
-            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-
             if (file) {
-                if (!allowedTypes.includes(file.type)) {
-                    Swal.fire('Format Salah', 'Hanya format JPEG, JPG, atau PNG yang diperbolehkan.', 'error');
-                    input.value = '';
-                    resetFotoPreview();
-                    return;
+                if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type) || file.size > 200 * 1024) {
+                    Swal.fire('Gagal Upload', 'Format harus JPG/PNG dan maksimal 200KB.', 'error');
+                    hapusFoto(); return;
                 }
-                if (file.size > maxAllowedSize) {
-                    Swal.fire('Ukuran Terlalu Besar', 'Ukuran foto maksimal 200KB.', 'error');
-                    input.value = '';
-                    resetFotoPreview();
-                    return;
-                }
-
                 filesToUpload.pasfoto = file;
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('foto-preview').src = e.target.result;
                     document.getElementById('preview-container').classList.remove('hidden');
-                    document.getElementById('foto-icon').classList.add('hidden');
+                    document.getElementById('foto-placeholder').classList.add('hidden');
                 }
                 reader.readAsDataURL(file);
-            } else {
-                resetFotoPreview();
-            }
+            } else hapusFoto();
         }
 
-        function resetFotoPreview() {
+        function hapusFoto() {
             filesToUpload.pasfoto = null;
-            document.getElementById('preview-container').classList.add('hidden');
-            document.getElementById('foto-preview').src = '';
-            document.getElementById('foto-icon').classList.remove('hidden');
+            document.getElementById('pasfoto').value = '';
+            const existingFoto = document.getElementById('existing_pasfoto').value;
+            
+            if(existingFoto) {
+                let viewUrl = existingFoto;
+                const matchId = viewUrl.match(/[-\w]{25,}/);
+                if(matchId && viewUrl.includes('drive.google.com')) {
+                    viewUrl = `https://drive.google.com/uc?export=view&id=${matchId[0]}`;
+                }
+                document.getElementById('foto-preview').src = viewUrl;
+            } else {
+                document.getElementById('preview-container').classList.add('hidden');
+                document.getElementById('foto-preview').src = '';
+                document.getElementById('foto-placeholder').classList.remove('hidden');
+            }
         }
 
         function validasiDokumen(input) {
             const files = input.files;
-            const maxTotalSize = 2 * 1024 * 1024; // 2 MB
             let totalSize = 0;
             const listEl = document.getElementById('doc-list');
             listEl.innerHTML = '';
@@ -602,26 +683,16 @@
             if (files.length > 0) {
                 for (let i = 0; i < files.length; i++) {
                     if (files[i].type !== 'application/pdf') {
-                        Swal.fire('Format Salah', 'Semua dokumen pendukung harus berformat PDF.', 'error');
-                        input.value = '';
-                        listEl.innerHTML = '';
-                        return;
+                        Swal.fire('Format Salah', 'Semua file dokumen wajib PDF.', 'error'); input.value = ''; return;
                     }
                     totalSize += files[i].size;
                 }
-
-                if (totalSize > maxTotalSize) {
-                    Swal.fire('Ukuran Terlalu Besar', 'Total ukuran semua dokumen tidak boleh lebih dari 2MB.', 'error');
-                    input.value = '';
-                    return;
+                if (totalSize > 2 * 1024 * 1024) {
+                    Swal.fire('Melebihi Batas', 'Total keseluruhan dokumen maksimal 2MB.', 'error'); input.value = ''; return;
                 }
-
                 for (let i = 0; i < files.length; i++) {
                     filesToUpload.dokumen.push(files[i]);
-                    const item = document.createElement('div');
-                    item.className = 'truncate border-b border-slate-200 py-1.5 px-2 last:border-0';
-                    item.innerText = `📄 ${files[i].name} (${(files[i].size / 1024).toFixed(1)} KB)`;
-                    listEl.appendChild(item);
+                    listEl.innerHTML += `<div class="truncate border-b border-slate-100 py-1.5 flex justify-between"><span class="text-blue-600 font-medium"><i class="bi bi-file-earmark-pdf mr-1"></i>${files[i].name}</span><span class="text-slate-400 text-xs mt-0.5">(${(files[i].size/1024).toFixed(0)}KB)</span></div>`;
                 }
             }
         }
@@ -630,84 +701,56 @@
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = () => resolve({
-                    name: file.name,
-                    mimeType: file.type,
-                    data: reader.result.split(',')[1]
-                });
+                reader.onload = () => resolve({ name: file.name, mimeType: file.type, data: reader.result.split(',')[1] });
                 reader.onerror = error => reject(error);
             });
         }
 
-        // --- 4. PROSES SUBMIT FORM (POST) ---
         async function handleFormSubmit(event) {
             event.preventDefault();
-
+            
             if(!/^(\+62|08)[0-9]*$/.test(document.getElementById('hp').value)){
-                Swal.fire('Error', 'Format No. Handphone tidak valid.', 'error');
-                return;
+                Swal.fire('Format HP Salah', 'Nomor handphone harus diawali dengan 08 atau +62', 'error'); return;
+            }
+
+            if(!filesToUpload.pasfoto && !document.getElementById('existing_pasfoto').value) {
+                Swal.fire('Perhatian', 'Pasfoto wajib diunggah.', 'warning'); return;
+            }
+            if(filesToUpload.dokumen.length === 0 && !document.getElementById('existing_dokumen').value) {
+                Swal.fire('Perhatian', 'Dokumen PDF wajib diunggah.', 'warning'); return;
             }
 
             Swal.fire({
-                title: 'Mengirim Data...',
-                html: 'Mohon tunggu, jangan tutup halaman ini.<br>Sedang mengunggah data dan dokumen...',
-                allowOutsideClick: false,
-                didOpen: () => { Swal.showLoading(); }
+                title: 'Menyimpan Data', html: 'Mengunggah file dan menyimpan data ke server. Mohon tunggu...',
+                allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }
             });
 
             try {
                 const formData = new FormData(document.getElementById('registrasiForm'));
                 const dataObj = Object.fromEntries(formData.entries());
+                dataObj.nim = document.getElementById('nim').value; 
                 
                 let pasfotoData = null;
-                if (filesToUpload.pasfoto) {
-                    pasfotoData = await fileToBase64(filesToUpload.pasfoto);
-                }
+                if (filesToUpload.pasfoto) pasfotoData = await fileToBase64(filesToUpload.pasfoto);
 
                 let dokumenData = [];
                 for (let i = 0; i < filesToUpload.dokumen.length; i++) {
                     dokumenData.push(await fileToBase64(filesToUpload.dokumen[i]));
                 }
 
-                const payload = {
-                    action: 'submit',
-                    data: dataObj,
-                    pasfoto: pasfotoData,
-                    dokumen: dokumenData
-                };
+                const payload = { action: 'submit', data: dataObj, pasfoto: pasfotoData, dokumen: dokumenData };
 
-                // Request ke GAS Web App (text/plain untuk menghindari CORS preflight errors)
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                
+                const response = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
                 const result = await response.json();
                 
-                if(result.status !== 'success') {
-                    throw new Error(result.message);
-                }
+                if(result.status !== 'success') throw new Error(result.message);
                 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Pendaftaran Berhasil!',
-                    text: 'Data dan dokumen Anda telah berhasil dikirim ke server.',
-                    confirmButtonText: 'Selesai',
-                    confirmButtonColor: '#4f46e5'
-                }).then(() => {
-                    document.getElementById('registrasiForm').reset();
-                    resetFotoPreview();
-                    document.getElementById('doc-list').innerHTML = '';
-                    document.getElementById('nim-message').innerText = '';
-                    window.scrollTo(0,0);
+                Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Pendaftaran Anda berhasil dikirim.' }).then(() => {
+                    location.reload();
                 });
 
             } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal Mengirim',
-                    text: 'Terjadi kesalahan: ' + error.message
-                });
+                Swal.fire({ icon: 'error', title: 'Gagal Mengirim', text: error.message });
             }
         }
     </script>
